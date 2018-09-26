@@ -108,13 +108,13 @@
 
 
 
-  <meta name="description" content="前言在上一篇Android开发者编写自己的API接口：从零开始（一）中，已经介绍了如何搭建一个基本的开发环境，以及接口的编写，最后是能够成功运行的。 这一篇将更进一步，主要解决下面两个问题：  ①：如何让后台项目运行在TomCat上 ②：如何在云服务器上部署自己的项目">
+  <meta name="description" content="前言在上一篇Android开发者编写自己的API接口（上）中，已经介绍了如何搭建一个基本的开发环境，以及接口的编写，最后是能够成功运行的。 这一篇将更进一步，主要解决下面两个问题：  ①：如何让后台项目运行在TomCat上 ②：如何在云服务器上部署自己的项目">
 <meta name="keywords" content="Android">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android开发者编写自己的API接口（下）">
 <meta property="og:url" content="http://yoursite.com/2018/08/14/Android开发者编写自己的API接口（下）/index.html">
 <meta property="og:site_name" content="老晨子の博客">
-<meta property="og:description" content="前言在上一篇Android开发者编写自己的API接口：从零开始（一）中，已经介绍了如何搭建一个基本的开发环境，以及接口的编写，最后是能够成功运行的。 这一篇将更进一步，主要解决下面两个问题：  ①：如何让后台项目运行在TomCat上 ②：如何在云服务器上部署自己的项目">
+<meta property="og:description" content="前言在上一篇Android开发者编写自己的API接口（上）中，已经介绍了如何搭建一个基本的开发环境，以及接口的编写，最后是能够成功运行的。 这一篇将更进一步，主要解决下面两个问题：  ①：如何让后台项目运行在TomCat上 ②：如何在云服务器上部署自己的项目">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://my-blog-picture.oss-cn-beijing.aliyuncs.com/2018.8.13/001.png">
 <meta property="og:image" content="https://my-blog-picture.oss-cn-beijing.aliyuncs.com/2018.8.13/002.png">
@@ -132,10 +132,10 @@
 <meta property="og:image" content="https://my-blog-picture.oss-cn-beijing.aliyuncs.com/2018.8.13/014.png">
 <meta property="og:image" content="https://my-blog-picture.oss-cn-beijing.aliyuncs.com/2018.8.13/015.png">
 <meta property="og:image" content="https://my-blog-picture.oss-cn-beijing.aliyuncs.com/%E8%A1%A8%E6%83%85%E5%8C%85/%E5%91%8A%E8%BE%9E2.jpg">
-<meta property="og:updated_time" content="2018-08-14T12:03:16.137Z">
+<meta property="og:updated_time" content="2018-08-14T12:05:14.085Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android开发者编写自己的API接口（下）">
-<meta name="twitter:description" content="前言在上一篇Android开发者编写自己的API接口：从零开始（一）中，已经介绍了如何搭建一个基本的开发环境，以及接口的编写，最后是能够成功运行的。 这一篇将更进一步，主要解决下面两个问题：  ①：如何让后台项目运行在TomCat上 ②：如何在云服务器上部署自己的项目">
+<meta name="twitter:description" content="前言在上一篇Android开发者编写自己的API接口（上）中，已经介绍了如何搭建一个基本的开发环境，以及接口的编写，最后是能够成功运行的。 这一篇将更进一步，主要解决下面两个问题：  ①：如何让后台项目运行在TomCat上 ②：如何在云服务器上部署自己的项目">
 <meta name="twitter:image" content="https://my-blog-picture.oss-cn-beijing.aliyuncs.com/2018.8.13/001.png">
 
 
@@ -348,7 +348,7 @@
                 
               
 
-              <time title="创建时间：2018-08-14 19:59:17 / 修改时间：20:03:16" itemprop="dateCreated datePublished" datetime="2018-08-14T19:59:17+08:00">2018-08-14</time>
+              <time title="创建时间：2018-08-14 19:59:17 / 修改时间：20:05:14" itemprop="dateCreated datePublished" datetime="2018-08-14T19:59:17+08:00">2018-08-14</time>
             
 
             
@@ -386,13 +386,13 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在上一篇<a href="https://oldchen.top/2018/08/05/Android%E5%BC%80%E5%8F%91%E8%80%85%E7%BC%96%E5%86%99%E8%87%AA%E5%B7%B1%E7%9A%84API%E6%8E%A5%E5%8F%A3%EF%BC%9A%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="noopener">Android开发者编写自己的API接口：从零开始（一）</a>中，已经介绍了如何搭建一个基本的开发环境，以及接口的编写，最后是能够成功运行的。</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在上一篇<a href="https://oldchen.top/2018/08/05/Android%E5%BC%80%E5%8F%91%E8%80%85%E7%BC%96%E5%86%99%E8%87%AA%E5%B7%B1%E7%9A%84API%E6%8E%A5%E5%8F%A3%EF%BC%9A%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="noopener">Android开发者编写自己的API接口（上）</a>中，已经介绍了如何搭建一个基本的开发环境，以及接口的编写，最后是能够成功运行的。</p>
 <p>这一篇将更进一步，主要解决下面两个问题：</p>
 <ul>
 <li>①：如何让后台项目运行在TomCat上</li>
-<li>②：如何在云服务器上部署自己的项目<a id="more"></a> 
-</li>
+<li>②：如何在云服务器上部署自己的项目</li>
 </ul>
+<a id="more"></a>
 <h2 id="Start"><a href="#Start" class="headerlink" title="Start"></a>Start</h2><h4 id="一、本地Tomcat的使用"><a href="#一、本地Tomcat的使用" class="headerlink" title="一、本地Tomcat的使用"></a>一、本地Tomcat的使用</h4><h5 id="1-1、安装Tomcat"><a href="#1-1、安装Tomcat" class="headerlink" title="1.1、安装Tomcat"></a>1.1、安装Tomcat</h5><p>使用TomCat，自然是要TomCat的安装包咯</p>
 <p><a href="https://tomcat.apache.org/download-90.cgi" target="_blank" rel="noopener">安装包下载地址</a></p>
 <p><img src="https://my-blog-picture.oss-cn-beijing.aliyuncs.com/2018.8.13/001.png" alt="image"></p>
@@ -490,6 +490,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2018/09/26/Bugly热修复使用及多渠道打包/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -562,7 +566,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-count">4</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
