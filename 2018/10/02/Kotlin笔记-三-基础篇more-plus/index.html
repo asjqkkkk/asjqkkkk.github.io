@@ -116,7 +116,7 @@
 <meta property="og:site_name" content="老晨子の博客">
 <meta property="og:description" content="1.接口的默认实现接口的方法可以有一个默认实现。与Java8不同的是，Java8中需要你在这样的实现上标注default关键字，对于这样的方法，Kotlin没有特殊的注解 ：只需要提供一个方法体 1234interface Clickable&amp;#123;    fun click()    fun showOff = println(&amp;quot;I&amp;apos;m clickable&amp;quot;)&amp;">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-02T02:22:49.668Z">
+<meta property="og:updated_time" content="2018-10-02T05:09:45.019Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kotlin笔记(三):基础篇more plus">
 <meta name="twitter:description" content="1.接口的默认实现接口的方法可以有一个默认实现。与Java8不同的是，Java8中需要你在这样的实现上标注default关键字，对于这样的方法，Kotlin没有特殊的注解 ：只需要提供一个方法体 1234interface Clickable&amp;#123;    fun click()    fun showOff = println(&amp;quot;I&amp;apos;m clickable&amp;quot;)&amp;">
@@ -331,7 +331,7 @@
                 
               
 
-              <time title="创建时间：2018-10-02 10:21:45 / 修改时间：10:22:49" itemprop="dateCreated datePublished" datetime="2018-10-02T10:21:45+08:00">2018-10-02</time>
+              <time title="创建时间：2018-10-02 10:21:45 / 修改时间：13:09:45" itemprop="dateCreated datePublished" datetime="2018-10-02T10:21:45+08:00">2018-10-02</time>
             
 
             
@@ -412,32 +412,20 @@
 <p>伴生对象可以访问类中的所有private成员，包括private构造方法，它是实现工厂模式的理想选择。 </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class User private constructor(val nickname: String) &#123;</span><br><span class="line">    companion object &#123;</span><br><span class="line">        fun newSubscribingUser(email: String) =</span><br><span class="line">        User(email.substringBefore (&apos;@&apos;)) </span><br><span class="line">        </span><br><span class="line">        fun newFacebookUser(accountld: Int) = </span><br><span class="line">        User(getFacebookName(accountld)) </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;&gt; val subscribingUser = User.newSubscribingUser (&quot;bob@gmail.com&quot;) </span><br><span class="line">&gt;&gt; val facebookUser = User.newFacebookUser(4) </span><br><span class="line">&gt;&gt; println(subscribingUser.nickname)</span><br><span class="line">bob</span><br></pre></td></tr></table></figure>
 <h3 id="小结："><a href="#小结：" class="headerlink" title="小结："></a>小结：</h3><ul>
-<li><p>Kotlin 的接口与 Java 的相似，但是可以包含默认实现 Oava 从第 8 版才开始 支持）和属性。</p>
-</li>
-<li><p>所有的声明默认都是 final 和 public 的。 · 要想使声明不是 final 的，将其标记为 open。</p>
-</li>
-<li><p>internal 声明在同一模块中可见。</p>
-</li>
-<li><p>嵌套类默认不是内部类。使用inner关键字来存储外部类的引用。</p>
-</li>
-<li><p>sealed 类的子类只能嵌套在自身的声明中（Kotlin 1.1 允许将子类放置在同 一文件的任意地方）。</p>
-</li>
-<li><p>初始化语句块和从构造方法为初始化类实例提供了灵活性。 </p>
-</li>
-<li><p>使用 field 标识符在访问器方法体中引用属性的支持字段。</p>
-</li>
-<li><p>数据类提供了编译器生成的 equals、 hashCode、 toString、 copy 和其 他方法。 </p>
-</li>
-<li><p>类委托帮助避免在代码中出现许多相似的委托方法。 </p>
-</li>
-<li><p>对象声明是 Kotlin 中定义单例类的方法。</p>
-</li>
-<li><p>伴生对象（与包级别函数和属性一起）替代了Java静态方法和字段定义。 </p>
-</li>
-<li><p>伴生对象与其他对象一样，可以实现接口，也可以拥有有扩展函数和属性。</p>
-</li>
-<li><p>对象表达式是 Kotlin中针对Java匿名内部类的替代品，并增加了诸如实现多 个接口的能力和修改在创建对象的作用域中定义的变量的能力等功能。</p>
-</li>
+<li>Kotlin 的接口与 Java 的相似，但是可以包含默认实现 (Java 从第8版才开始支持)和属性。</li>
+<li>所有的声明默认都是 final 和 public 的。</li>
+<li>要想使声明不是 final 的，将其标记为 open。</li>
+<li>internal 声明在同一模块中可见。</li>
+<li>嵌套类默认不是内部类。使用inner关键字来存储外部类的引用。</li>
+<li>sealed 类的子类只能嵌套在自身的声明中（Kotlin 1.1 允许将子类放置在同一文件的任意地方）。</li>
+<li>初始化语句块和从构造方法为初始化类实例提供了灵活性。 </li>
+<li>使用 field 标识符在访问器方法体中引用属性的支持字段。</li>
+<li>数据类提供了编译器生成的 equals、 hashCode、 toString、 copy 和其他方法。 </li>
+<li>类委托帮助避免在代码中出现许多相似的委托方法。 </li>
+<li>对象声明是 Kotlin 中定义单例类的方法。</li>
+<li>伴生对象（与包级别函数和属性一起）替代了Java静态方法和字段定义。 </li>
+<li>伴生对象与其他对象一样，可以实现接口，也可以拥有有扩展函数和属性。</li>
+<li>对象表达式是 Kotlin中针对Java匿名内部类的替代品，并增加了诸如实现多个接口的能力和修改在创建对象的作用域中定义的变量的能力等功能。</li>
 </ul>
 
       
@@ -476,6 +464,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/03/Kotlin笔记-四-基础篇most-plus/" rel="prev" title="Kotlin笔记(四):基础篇most plus">
+                Kotlin笔记(四):基础篇most plus <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -549,7 +541,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-count">9</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
