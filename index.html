@@ -289,6 +289,152 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/08/手把手教你接入android端微信支付/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Old Chen">
+      <meta itemprop="description" content="知惑顿断如碎石，思惑难断如藕丝">
+      <meta itemprop="image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1532883475752&di=918e8ad03b17db01c84cdca20dd0ecdb&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201204%2F28%2F20120428125420_iUrGK.thumb.700_0.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="老晨子の博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/08/手把手教你接入android端微信支付/" itemprop="url">
+                  手把手教你接入android端微信支付
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-10-08 20:19:09 / 修改时间：20:20:56" itemprop="dateCreated datePublished" datetime="2018-10-08T20:19:09+08:00">2018-10-08</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="Android端接入微信支付，蛮简单的"><a href="#Android端接入微信支付，蛮简单的" class="headerlink" title="Android端接入微信支付，蛮简单的"></a>Android端接入微信支付，蛮简单的</h2><h3 id="一、添加gradle依赖："><a href="#一、添加gradle依赖：" class="headerlink" title="一、添加gradle依赖："></a>一、添加gradle依赖：</h3><p>在app module目录下的build.gralde中添加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    //微信SDK接入</span><br><span class="line">    implementation &apos;com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/10/08/手把手教你接入android端微信支付/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/05/Kotlin笔记-五-基础篇latest/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -335,12 +481,24 @@
                 
               
 
-              <time title="创建时间：2018-10-05 13:04:28 / 修改时间：13:05:57" itemprop="dateCreated datePublished" datetime="2018-10-05T13:04:28+08:00">2018-10-05</time>
+              <time title="创建时间：2018-10-05 13:04:28" itemprop="dateCreated datePublished" datetime="2018-10-05T13:04:28+08:00">2018-10-05</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-10-08 20:22:12" itemprop="dateModified" datetime="2018-10-08T20:22:12+08:00">2018-10-08</time>
               
             
           </span>
@@ -376,7 +534,6 @@
         
           <h3 id="1-可空类型"><a href="#1-可空类型" class="headerlink" title="1.可空类型"></a>1.可空类型</h3><p>问号可以加在任何类型的后面来表示这个类型的变量可以存储 null 引用 ： String?、 Int?、 MyCustomType? ，等等</p>
 <p>一旦你有一个可空类型的值，能对它进行的操作也会受到限制。例如，不能再调用它的方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; fun strLenSafe(s: String?) = s.length() </span><br><span class="line">ERROR: only safe (?.) or non null asserted (!!.) calls are allowed on a nullable receiver of type kotlin.String?</span><br></pre></td></tr></table></figure></p>
-<p>也不能把它赋值给非空类型的变量 ：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; val x: String? = null </span><br><span class="line">&gt;&gt; var y: String = x </span><br><span class="line">ERROR: Type mismatch: inferred type is String? but String was expected</span><br></pre></td></tr></table></figure></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/10/05/Kotlin笔记-五-基础篇latest/#more" rel="contents">
@@ -632,12 +789,24 @@
                 
               
 
-              <time title="创建时间：2018-10-02 10:21:45 / 修改时间：13:09:45" itemprop="dateCreated datePublished" datetime="2018-10-02T10:21:45+08:00">2018-10-02</time>
+              <time title="创建时间：2018-10-02 10:21:45" itemprop="dateCreated datePublished" datetime="2018-10-02T10:21:45+08:00">2018-10-02</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-10-08 20:22:50" itemprop="dateModified" datetime="2018-10-08T20:22:50+08:00">2018-10-08</time>
               
             
           </span>
@@ -673,7 +842,6 @@
         
           <h3 id="1-接口的默认实现"><a href="#1-接口的默认实现" class="headerlink" title="1.接口的默认实现"></a>1.接口的默认实现</h3><p>接口的方法可以有一个默认实现。与Java8不同的是，Java8中需要你在这样的实现上标注default关键字，对于这样的方法，Kotlin没有特殊的注解 ：只需要提供一个方法体</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">interface Clickable&#123;</span><br><span class="line">    fun click()</span><br><span class="line">    fun showOff = println(&quot;I&apos;m clickable&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在实现接口的地方如果要显式地实现方法，在Kotlin中需要把 基类的名字放在尖括号中 ：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">super&lt;Clickable&gt;.showOff()</span><br></pre></td></tr></table></figure></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/10/02/Kotlin笔记-三-基础篇more-plus/#more" rel="contents">
@@ -1635,168 +1803,13 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/29/Old Chen's Wish List/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Old Chen">
-      <meta itemprop="description" content="知惑顿断如碎石，思惑难断如藕丝">
-      <meta itemprop="image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1532883475752&di=918e8ad03b17db01c84cdca20dd0ecdb&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201204%2F28%2F20120428125420_iUrGK.thumb.700_0.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="老晨子の博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/29/Old Chen's Wish List/" itemprop="url">
-                  Old Chen's Wish List
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-07-29 22:51:44" itemprop="dateCreated datePublished" datetime="2018-07-29T22:51:44+08:00">2018-07-29</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-08-14 20:03:05" itemprop="dateModified" datetime="2018-08-14T20:03:05+08:00">2018-08-14</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="一、Old-Chen的愿望"><a href="#一、Old-Chen的愿望" class="headerlink" title="一、Old Chen的愿望"></a>一、Old Chen的愿望</h2><h4 id="1-、have-a-good-feel"><a href="#1-、have-a-good-feel" class="headerlink" title="(1)、have a good feel"></a>(1)、have a good feel</h4><h4 id="2-、看完所有买的文学书"><a href="#2-、看完所有买的文学书" class="headerlink" title="(2)、看完所有买的文学书"></a>(2)、看完所有买的文学书</h4><ul>
-<li style="list-style: none"><input type="checkbox"> 1：东野硅谷系列</li>
-<li style="list-style: none"><input type="checkbox"> 2：三体系列             （✔××）
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/07/29/Old Chen's Wish List/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
+
 
 
           </div>
@@ -1841,7 +1854,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-count">11</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

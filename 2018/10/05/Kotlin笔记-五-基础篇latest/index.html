@@ -116,7 +116,7 @@
 <meta property="og:site_name" content="老晨子の博客">
 <meta property="og:description" content="1.可空类型问号可以加在任何类型的后面来表示这个类型的变量可以存储 null 引用 ： String?、 Int?、 MyCustomType? ，等等 一旦你有一个可空类型的值，能对它进行的操作也会受到限制。例如，不能再调用它的方法12&amp;gt;&amp;gt; fun strLenSafe(s: String?) = s.length() ERROR: only safe (?.) or non nul">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-05T05:05:57.744Z">
+<meta property="og:updated_time" content="2018-10-08T12:22:12.396Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kotlin笔记(五):基础篇latest">
 <meta name="twitter:description" content="1.可空类型问号可以加在任何类型的后面来表示这个类型的变量可以存储 null 引用 ： String?、 Int?、 MyCustomType? ，等等 一旦你有一个可空类型的值，能对它进行的操作也会受到限制。例如，不能再调用它的方法12&amp;gt;&amp;gt; fun strLenSafe(s: String?) = s.length() ERROR: only safe (?.) or non nul">
@@ -331,12 +331,24 @@
                 
               
 
-              <time title="创建时间：2018-10-05 13:04:28 / 修改时间：13:05:57" itemprop="dateCreated datePublished" datetime="2018-10-05T13:04:28+08:00">2018-10-05</time>
+              <time title="创建时间：2018-10-05 13:04:28" itemprop="dateCreated datePublished" datetime="2018-10-05T13:04:28+08:00">2018-10-05</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-10-08 20:22:12" itemprop="dateModified" datetime="2018-10-08T20:22:12+08:00">2018-10-08</time>
               
             
           </span>
@@ -371,59 +383,63 @@
       
         <h3 id="1-可空类型"><a href="#1-可空类型" class="headerlink" title="1.可空类型"></a>1.可空类型</h3><p>问号可以加在任何类型的后面来表示这个类型的变量可以存储 null 引用 ： String?、 Int?、 MyCustomType? ，等等</p>
 <p>一旦你有一个可空类型的值，能对它进行的操作也会受到限制。例如，不能再调用它的方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; fun strLenSafe(s: String?) = s.length() </span><br><span class="line">ERROR: only safe (?.) or non null asserted (!!.) calls are allowed on a nullable receiver of type kotlin.String?</span><br></pre></td></tr></table></figure></p>
-<p>也不能把它赋值给非空类型的变量 ：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; val x: String? = null </span><br><span class="line">&gt;&gt; var y: String = x </span><br><span class="line">ERROR: Type mismatch: inferred type is String? but String was expected</span><br></pre></td></tr></table></figure></p>
 <a id="more"></a> 
-<p>也不能把可空类型的值传给拥有非空类型参数的函数 ：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; strLen(x) </span><br><span class="line">ERROR: Type mismatch: inferred type is String? but String was expected</span><br></pre></td></tr></table></figure></p>
-<p>那么你可以对它做什么呢？最重要的操作就是和 null 进行比较。 而且一旦你 进行了比较操作，编译器就会记住，并且在这次比较发生的作用域内把这个值当作非空来对待</p>
-<h3 id="2-安全调用运算符：”-”"><a href="#2-安全调用运算符：”-”" class="headerlink" title="2.安全调用运算符：”?.”"></a>2.安全调用运算符：”?.”</h3><blockquote>
-<p>Kotlin的弹药库中最有效的一种工具就是安全调用运算符：?.，它允许你把一 次null检查和一次方法调用合并成一个操作。</p>
-</blockquote>
-<p>例如，表达式 s?.toUpperCase() 等同于下面这种烦琐的写法：if(s!=null) s.toUpperCase() else null。 </p>
-<h3 id="3-Elvis运算符：”-”"><a href="#3-Elvis运算符：”-”" class="headerlink" title="3.Elvis运算符：”?:”"></a>3.Elvis运算符：”?:”</h3><p>Kotlin 有方便的运算符来提供代替null的默认值。它被称作<strong>Elvis运算符</strong>（或者 null合并运算符，如果你喜欢听起来更严肃的名称）。下面展示了它是如何使用的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fun foo(s: String?) &#123;</span><br><span class="line">    val t: String= s?:&quot;&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><em>Elvis 运算符接收两个运算数，如果第一个运算数不为null，运算结果就是第 一个运算数；如果第一个运算数为null，运算结果就是第二个运算数。</em></p>
-<h3 id="4-安全转换：”as-”"><a href="#4-安全转换：”as-”" class="headerlink" title="4.安全转换：”as?”"></a>4.安全转换：”as?”</h3><blockquote>
-<p>as? 运算符尝试把值转换成指定的类型，如果值不是合适的类型就返回 null</p>
-</blockquote>
-<p>一种常见的模式是把安全转换和 Elvis 运算符结合使用。例如，实现 equals 方法的时候这样的用法非常方便。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class Person(val firstNarne: String, val lastNarne: String)&#123;</span><br><span class="line">    override fun equals(o: Any?): Boolean &#123;</span><br><span class="line">        val otherPerson = o as? Person?: return false</span><br><span class="line">        return otherPerson.firstNarne == firstNarne &amp;&amp; otherPerson.lastNarne == lastNarne </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    override fun hashCode(): Int = firstNarne.hashCode() * 37 + lastNarne.hashCode() </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;&gt; val pl = Person ( &quot;Drnitry&quot;,&quot;Jernerov&quot;) </span><br><span class="line">&gt;&gt; val p2 = Person ( &quot;Drnitry&quot;,&quot;Jernerov&quot;) </span><br><span class="line">&gt;&gt; println (pl == p2) </span><br><span class="line">true</span><br><span class="line">&gt;&gt; println(pl.equals(42)) </span><br><span class="line">false</span><br></pre></td></tr></table></figure>
-<h3 id="5-非空断言：”-”"><a href="#5-非空断言：”-”" class="headerlink" title="5.非空断言：”!!”"></a>5.非空断言：”!!”</h3><blockquote>
-<p>非空断言是 Kotlin 提供给你的最简单直率的处理可空类型值的工具。它使用双感叹号表示，可以把任何值转换成非空类型。如果对 null 值做非空断言，则会抛出异常。</p>
-</blockquote>
-<p>某些问题适合用非空断言来解决。当你在一个函数中检查一个值是否为null，而在另一个函数中使用这个值时，这种情况下编译器无法识别这种用法是否安全。如果你确信这样的检查一定在其他某个函数中存在，你可能不想在使用这个值之前重复检查，这时你就可以使用非空断言。</p>
-<p> 当你使用 !! 并且它的结果是异常时， 异常调用械的跟踪信息只表明异常发生在哪一行代码，而不会表明异常发生在哪一个表达 式。 为了让跟踪信息更清晰精确地表示哪个值为 null，最好避免在同一行中使用多个!!断言</p>
-<h3 id="6-”let”函数"><a href="#6-”let”函数" class="headerlink" title="6.”let”函数"></a>6.”let”函数</h3><blockquote>
-<p>let 函数让处理可空表达式变得更容易。 和安全调用运算符一起，它允许你对表达式求值，检查求值结果是否为 null，并把结果保存为一个变量。 所有这些动作都在同一个简洁的表达式中。 </p>
-</blockquote>
-<p>下面举个栗子：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fun sendEmailTo(email: String) &#123; /* ... */ &#125;</span><br></pre></td></tr></table></figure>
-<p>不能把可空类型的值传上面给这个函数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; val email: String? = ...</span><br><span class="line">&gt;&gt; sendEmailTo(email) </span><br><span class="line">ERROR: Type mismatch: inferred type is String? but String was expected</span><br></pre></td></tr></table></figure>
-<p>必须显式地检查这个值不为 null:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if (email != null) sendEmailTo(email)</span><br></pre></td></tr></table></figure>
-<p>如果使用了let函数，会是下面这样子的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">email?.let &#123; email -&gt; sendEmailTo(email) &#125;</span><br></pre></td></tr></table></figure>
-<p><strong>let</strong> 函数只在 email 的值非空时才被调用，所以你就能在 lambda 中把 email 当作非空的实参使用。<br>使用自动生成的名字 it 这种简明语法之后，上面的代码就更短了 ：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">email?.let&#123; sendEmailTo(it) ｝</span><br></pre></td></tr></table></figure></p>
-<h3 id="7-延迟初始化的属性"><a href="#7-延迟初始化的属性" class="headerlink" title="7.延迟初始化的属性"></a>7.延迟初始化的属性</h3><p>Kotlin 通常要求你在构造方法中初始化所有属性，如果某个属性是 非空类型，你就必须提供非空的初始化值。否则，你就必须使用可空类型。否则， 你就必须使用可空类型。如果你这样做，该属性的每一次访问都需要 null 检查或者 !! 运算符。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class MyService &#123;</span><br><span class="line">    fun performAction() : String = &quot;foo&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class MyTest&#123;</span><br><span class="line">    private var myService: MyService? = null </span><br><span class="line">    </span><br><span class="line">    @Before fun setUp()&#123;</span><br><span class="line">        myService = MyService() </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    @Test fun testAction()&#123;</span><br><span class="line">        //必须注意可空性：要么 用!!， 要么用?.</span><br><span class="line">        Assert.assertEquals( &quot;foo&quot; ， myService!!.performAction() ) </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>这段代码很难看，尤其是你要反复使用这个属性的时候。<br>为了解决这个问题， 使用 <strong>lateinit</strong> 修饰符来完成这样的声明。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class MyService &#123;</span><br><span class="line">    fun performAction() : String = &quot;foo&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class MyTest&#123;</span><br><span class="line">    //声明一个不需要初始化 器的非空类型的属性</span><br><span class="line">    private lateinit var myService: MyService</span><br><span class="line">    </span><br><span class="line">    @Before fun setUp()&#123;</span><br><span class="line">        myService = MyService() </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @Test fun testAction()&#123;</span><br><span class="line">        //不需要 null 检查直接访问属性</span><br><span class="line">        Assert.assertEquals( &quot;foo&quot; ， myService!!.performAction() ) </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><em>注意， 延迟初始化的属性都是 var，因为需要在构造方法外修改它的值</em></p>
-<h3 id="8-”Any”和”Any-”：根类型"><a href="#8-”Any”和”Any-”：根类型" class="headerlink" title="8.”Any”和”Any?”：根类型"></a>8.”Any”和”Any?”：根类型</h3><blockquote>
-<p>和 Object 作为 Java 类层级结构的根差不多， <strong>Any</strong> 类型是 Kotlin 所有非空类型的超类型（非空类型的根）。</p>
-<p>但是在 Java 中， Object 只是所有引用类型的超类 型（引用类型的根），而基本数据类型并不是类层级结构的一部分。</p>
-<p>这意味着当你 需要 Object 的时候，不得不使用像 java.lang.Integer 这样的包装类型来表示基本数据类型的值。 <strong>而在 Kotlin 中， Any 是所有类型的超类型（所有类型的根）</strong>， 包括像 Int 这样的基本数据类型。 </p>
-</blockquote>
-<p>和 Java 一样，把基本数据类型的值赋给 <strong>Any</strong> 类型的变量时会自动装箱：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">val answer: Any = 42</span><br></pre></td></tr></table></figure>
-<p><em>注意 <strong>Any</strong> 是非空类型，所以 <strong>Any</strong> 类型的变量不可以持有 null 值</em></p>
-<h3 id="9-Unit-类型-：-Kotlin-的”void”"><a href="#9-Unit-类型-：-Kotlin-的”void”" class="headerlink" title="9.Unit 类型 ： Kotlin 的”void”"></a>9.Unit 类型 ： Kotlin 的”void”</h3><p>Kotlin 中的 <strong>Unit</strong> 类型完成了 Java 中的 void 一样的功能。当函数没什么有意思的结果要返回时，它可以用作函数的返回类型：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fun f () : Unit &#123; . . . &#125;</span><br></pre></td></tr></table></figure></p>
-<p>语法上，这和写一个带有代码块体但不带类型声明的函数没有什么不同：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fun f () &#123; .. &#125;         //缩写版</span><br></pre></td></tr></table></figure>
+<p>也不能把它赋值给非空类型的变量 ：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; val x: String? = null </span><br><span class="line">&gt;&gt; var y: String = x </span><br><span class="line">ERROR: Type mismatch: inferred type is String? but String was expected </span><br><span class="line">``` </span><br><span class="line">也不能把可空类型的值传给拥有非空类型参数的函数 ：</span><br></pre></td></tr></table></figure></p>
 <blockquote>
-<p>Unit 是一个完备的类型，可以作为类型参数，而 void 却不行。</p>
+<blockquote>
+<p>strLen(x)<br>ERROR: Type mismatch: inferred type is String? but String was expected<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">那么你可以对它做什么呢？最重要的操作就是和 null 进行比较。 而且一旦你 进行了比较操作，编译器就会记住，并且在这次比较发生的作用域内把这个值当作非空来对待</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 2.安全调用运算符：&quot;?.&quot;</span><br><span class="line"></span><br><span class="line">&gt; Kotlin的弹药库中最有效的一种工具就是安全调用运算符：?.，它允许你把一 次null检查和一次方法调用合并成一个操作。</span><br><span class="line"></span><br><span class="line">例如，表达式 s?.toUpperCase() 等同于下面这种烦琐的写法：if(s!=null) s.toUpperCase() else null。 </span><br><span class="line"></span><br><span class="line">### 3.Elvis运算符：&quot;?:&quot; </span><br><span class="line"></span><br><span class="line">Kotlin 有方便的运算符来提供代替null的默认值。它被称作**Elvis运算符**（或者 null合并运算符，如果你喜欢听起来更严肃的名称）。下面展示了它是如何使用的：</span><br></pre></td></tr></table></figure></p>
 </blockquote>
-<p>在函数式编程语言中， Unit 这个名字习惯上被用来表示“只有一个实例”，这正是 Kotlin 的 Unit 和 Java 的 void 的区别。</p>
-<h3 id="10-Nothing类型：“这个函数永不返回”"><a href="#10-Nothing类型：“这个函数永不返回”" class="headerlink" title="10.Nothing类型：“这个函数永不返回”"></a>10.Nothing类型：“这个函数永不返回”</h3><p>对某些 Kotlin 函数来说，”返回类型”的概念没有任何意义，因为它们从来不会成功地结束<br>,Kotlin 使用一种特殊的返回类型 Nothing 来表示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">fun fail(message: String): Nothing &#123; </span><br><span class="line">    throw IllegalStateException (message)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&gt;&gt; fail (&quot;Error occurred&quot;)</span><br><span class="line">java.lang.IllegalStateException: Error occurred</span><br></pre></td></tr></table></figure>
-<p>Nothing 类型没有任何值， 只有被当作函数返回值使用，或者被当作泛型函数 返回值的类型参数使用才会有意义。在其他所有情况下，声明一个不能存储任何值 的变量没有任何意义。 </p>
+</blockquote>
+<p>fun foo(s: String?) {<br>    val t: String= s?:””<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">*Elvis 运算符接收两个运算数，如果第一个运算数不为null，运算结果就是第 一个运算数；如果第一个运算数为null，运算结果就是第二个运算数。*</span><br><span class="line"></span><br><span class="line">### 4.安全转换：&quot;as?&quot;</span><br><span class="line"></span><br><span class="line">&gt; as? 运算符尝试把值转换成指定的类型，如果值不是合适的类型就返回 null</span><br><span class="line"></span><br><span class="line">一种常见的模式是把安全转换和 Elvis 运算符结合使用。例如，实现 equals 方法的时候这样的用法非常方便。</span><br></pre></td></tr></table></figure></p>
+<p>class Person(val firstNarne: String, val lastNarne: String){<br>    override fun equals(o: Any?): Boolean {<br>        val otherPerson = o as? Person?: return false<br>        return otherPerson.firstNarne == firstNarne &amp;&amp; otherPerson.lastNarne == lastNarne<br>    }</p>
+<pre><code>override fun hashCode(): Int = firstNarne.hashCode() * 37 + lastNarne.hashCode() 
+</code></pre><p>}</p>
+<blockquote>
+<blockquote>
+<p>val pl = Person ( “Drnitry”,”Jernerov”)<br>val p2 = Person ( “Drnitry”,”Jernerov”)<br>println (pl == p2)<br>true<br>println(pl.equals(42))<br>false<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 5.非空断言：&quot;!!&quot;</span><br><span class="line"></span><br><span class="line">&gt; 非空断言是 Kotlin 提供给你的最简单直率的处理可空类型值的工具。它使用双感叹号表示，可以把任何值转换成非空类型。如果对 null 值做非空断言，则会抛出异常。</span><br><span class="line"></span><br><span class="line">某些问题适合用非空断言来解决。当你在一个函数中检查一个值是否为null，而在另一个函数中使用这个值时，这种情况下编译器无法识别这种用法是否安全。如果你确信这样的检查一定在其他某个函数中存在，你可能不想在使用这个值之前重复检查，这时你就可以使用非空断言。</span><br><span class="line"></span><br><span class="line"> 当你使用 !! 并且它的结果是异常时， 异常调用械的跟踪信息只表明异常发生在哪一行代码，而不会表明异常发生在哪一个表达 式。 为了让跟踪信息更清晰精确地表示哪个值为 null，最好避免在同一行中使用多个!!断言</span><br><span class="line"></span><br><span class="line">### 6.&quot;let&quot;函数</span><br><span class="line"></span><br><span class="line">&gt; let 函数让处理可空表达式变得更容易。 和安全调用运算符一起，它允许你对表达式求值，检查求值结果是否为 null，并把结果保存为一个变量。 所有这些动作都在同一个简洁的表达式中。 </span><br><span class="line"></span><br><span class="line">下面举个栗子：</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+</blockquote>
+<p>fun sendEmailTo(email: String) { /<em> … </em>/ }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">不能把可空类型的值传上面给这个函数：</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<blockquote>
+<p>val email: String? = …<br>sendEmailTo(email)<br>ERROR: Type mismatch: inferred type is String? but String was expected<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">必须显式地检查这个值不为 null:</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+</blockquote>
+<p>if (email != null) sendEmailTo(email)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">如果使用了let函数，会是下面这样子的：</span><br></pre></td></tr></table></figure></p>
+<p>email?.let { email -&gt; sendEmailTo(email) }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">**let** 函数只在 email 的值非空时才被调用，所以你就能在 lambda 中把 email 当作非空的实参使用。</span><br><span class="line">使用自动生成的名字 it 这种简明语法之后，上面的代码就更短了 ：</span><br></pre></td></tr></table></figure></p>
+<p> email?.let{ sendEmailTo(it) ｝<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 7.延迟初始化的属性</span><br><span class="line"></span><br><span class="line">Kotlin 通常要求你在构造方法中初始化所有属性，如果某个属性是 非空类型，你就必须提供非空的初始化值。否则，你就必须使用可空类型。否则， 你就必须使用可空类型。如果你这样做，该属性的每一次访问都需要 null 检查或者 !! 运算符。</span><br></pre></td></tr></table></figure></p>
+<p>class MyService {<br>    fun performAction() : String = “foo”<br>}</p>
+<p>class MyTest{<br>    private var myService: MyService? = null </p>
+<pre><code>@Before fun setUp(){
+    myService = MyService() 
+}
+
+
+@Test fun testAction(){
+    //必须注意可空性：要么 用!!， 要么用?.
+    Assert.assertEquals( &quot;foo&quot; ， myService!!.performAction() ) 
+}
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">这段代码很难看，尤其是你要反复使用这个属性的时候。 </span><br><span class="line">为了解决这个问题， 使用 **lateinit** 修饰符来完成这样的声明。</span><br></pre></td></tr></table></figure></p>
+<p>class MyService {<br>    fun performAction() : String = “foo”<br>}</p>
+<p>class MyTest{<br>    //声明一个不需要初始化 器的非空类型的属性<br>    private lateinit var myService: MyService</p>
+<pre><code>@Before fun setUp(){
+    myService = MyService() 
+}
+
+@Test fun testAction(){
+    //不需要 null 检查直接访问属性
+    Assert.assertEquals( &quot;foo&quot; ， myService!!.performAction() ) 
+}
+</code></pre><p>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">*注意， 延迟初始化的属性都是 var，因为需要在构造方法外修改它的值*</span><br><span class="line"></span><br><span class="line">### 8.&quot;Any&quot;和&quot;Any?&quot;：根类型</span><br><span class="line"></span><br><span class="line">&gt; 和 Object 作为 Java 类层级结构的根差不多， **Any** 类型是 Kotlin 所有非空类型的超类型（非空类型的根）。</span><br><span class="line">&gt;</span><br><span class="line">&gt; 但是在 Java 中， Object 只是所有引用类型的超类 型（引用类型的根），而基本数据类型并不是类层级结构的一部分。</span><br><span class="line">&gt;</span><br><span class="line">&gt; 这意味着当你 需要 Object 的时候，不得不使用像 java.lang.Integer 这样的包装类型来表示基本数据类型的值。 **而在 Kotlin 中， Any 是所有类型的超类型（所有类型的根）**， 包括像 Int 这样的基本数据类型。 </span><br><span class="line"></span><br><span class="line">和 Java 一样，把基本数据类型的值赋给 **Any** 类型的变量时会自动装箱：</span><br></pre></td></tr></table></figure></p>
+<p>val answer: Any = 42<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">*注意 **Any** 是非空类型，所以 **Any** 类型的变量不可以持有 null 值*</span><br><span class="line"></span><br><span class="line">### 9.Unit 类型 ： Kotlin 的&quot;void&quot;</span><br><span class="line"></span><br><span class="line">Kotlin 中的 **Unit** 类型完成了 Java 中的 void 一样的功能。当函数没什么有意思的结果要返回时，它可以用作函数的返回类型：</span><br></pre></td></tr></table></figure></p>
+<p>fun f () : Unit { . . . }<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">语法上，这和写一个带有代码块体但不带类型声明的函数没有什么不同：</span><br></pre></td></tr></table></figure></p>
+<p>fun f () { .. }         //缩写版<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; Unit 是一个完备的类型，可以作为类型参数，而 void 却不行。</span><br><span class="line"></span><br><span class="line">在函数式编程语言中， Unit 这个名字习惯上被用来表示“只有一个实例”，这正是 Kotlin 的 Unit 和 Java 的 void 的区别。</span><br><span class="line"></span><br><span class="line">### 10.Nothing类型：“这个函数永不返回”</span><br><span class="line"></span><br><span class="line">对某些 Kotlin 函数来说，&quot;返回类型&quot;的概念没有任何意义，因为它们从来不会成功地结束</span><br><span class="line">,Kotlin 使用一种特殊的返回类型 Nothing 来表示：</span><br></pre></td></tr></table></figure></p>
+<p>fun fail(message: String): Nothing {<br>    throw IllegalStateException (message)<br>}</p>
+<blockquote>
+<blockquote>
+<p>fail (“Error occurred”)<br>java.lang.IllegalStateException: Error occurred<br><code>`</code><br>Nothing 类型没有任何值， 只有被当作函数返回值使用，或者被当作泛型函数 返回值的类型参数使用才会有意义。在其他所有情况下，声明一个不能存储任何值 的变量没有任何意义。 </p>
+</blockquote>
+</blockquote>
 <h3 id="11-可空性和集合"><a href="#11-可空性和集合" class="headerlink" title="11.可空性和集合"></a>11.可空性和集合</h3><p>遍历一个包含可空值的集合并过滤掉 null 是一个非常常见的操作，因此 Kotlin 提供了一个标准库函数 <strong>filterNotNull</strong> 来完成它。 </p>
 <h3 id="12-只读集合与可变集合"><a href="#12-只读集合与可变集合" class="headerlink" title="12.只读集合与可变集合"></a>12.只读集合与可变集合</h3><p>Kotlin 的集合设计和 Java 不同的另一项重要特质是，它把访问集合数据的接口和修改集合数据的接口分开了。这种区别存在于最基础的使用集合的接口之中:kotlin.collections.Collection。</p>
 <p>使用 kotlin.collections.MutableCollection 接口可以修改集合中的数据。它继承了普通的 kotlin.collections.Collection 接口,还提供了方法来添加和移除元素、清空集合等。 </p>
@@ -465,6 +481,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/08/手把手教你接入android端微信支付/" rel="prev" title="手把手教你接入android端微信支付">
+                手把手教你接入android端微信支付 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -538,7 +558,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-count">11</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -599,7 +619,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-可空类型"><span class="nav-number">1.</span> <span class="nav-text">1.可空类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-安全调用运算符：”-”"><span class="nav-number">2.</span> <span class="nav-text">2.安全调用运算符：”?.”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Elvis运算符：”-”"><span class="nav-number">3.</span> <span class="nav-text">3.Elvis运算符：”?:”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-安全转换：”as-”"><span class="nav-number">4.</span> <span class="nav-text">4.安全转换：”as?”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-非空断言：”-”"><span class="nav-number">5.</span> <span class="nav-text">5.非空断言：”!!”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-”let”函数"><span class="nav-number">6.</span> <span class="nav-text">6.”let”函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-延迟初始化的属性"><span class="nav-number">7.</span> <span class="nav-text">7.延迟初始化的属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-”Any”和”Any-”：根类型"><span class="nav-number">8.</span> <span class="nav-text">8.”Any”和”Any?”：根类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-Unit-类型-：-Kotlin-的”void”"><span class="nav-number">9.</span> <span class="nav-text">9.Unit 类型 ： Kotlin 的”void”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-Nothing类型：“这个函数永不返回”"><span class="nav-number">10.</span> <span class="nav-text">10.Nothing类型：“这个函数永不返回”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-可空性和集合"><span class="nav-number">11.</span> <span class="nav-text">11.可空性和集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-只读集合与可变集合"><span class="nav-number">12.</span> <span class="nav-text">12.只读集合与可变集合</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-可空类型"><span class="nav-number">1.</span> <span class="nav-text">1.可空类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-可空性和集合"><span class="nav-number">2.</span> <span class="nav-text">11.可空性和集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-只读集合与可变集合"><span class="nav-number">3.</span> <span class="nav-text">12.只读集合与可变集合</span></a></li></ol></div>
             
 
           </div>
