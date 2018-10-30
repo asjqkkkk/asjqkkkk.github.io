@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="说到Android端有哪些可以使用的数据库，大家首先想到的自然是SQLite这种带有官方属性加持的轻型的数据库。 不过对于像我这种基本上没有接触过SQL数据库语言编写的人来说，要通过去写难以查错且又毫不熟悉的数据库代码才能操作数据库的话，那就太令人头大了。  于是乎，便于Android开发者操作数据库的框架也就多了起来，其中人气较高的就有GreenDao、Realm，ObjectBox等，而Roo">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Room Database入门指南">
+<meta property="og:url" content="http://yoursite.com/2018/10/30/Room-Database入门指南/index.html">
+<meta property="og:site_name" content="老晨子の博客">
+<meta property="og:description" content="说到Android端有哪些可以使用的数据库，大家首先想到的自然是SQLite这种带有官方属性加持的轻型的数据库。 不过对于像我这种基本上没有接触过SQL数据库语言编写的人来说，要通过去写难以查错且又毫不熟悉的数据库代码才能操作数据库的话，那就太令人头大了。  于是乎，便于Android开发者操作数据库的框架也就多了起来，其中人气较高的就有GreenDao、Realm，ObjectBox等，而Roo">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/001-001.jpg">
+<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/001-002.jpg">
+<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/001.jpeg">
+<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/002.jpeg">
+<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/003.jpeg">
+<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/004.jpeg">
+<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/005.jpeg">
+<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/006.jpeg">
+<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/007.png">
+<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/009.png">
+<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/008.png">
+<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/010.png">
+<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/011.png">
+<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/012.png">
+<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/013.png">
+<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/014.png">
+<meta property="og:updated_time" content="2018-10-30T11:13:28.519Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Room Database入门指南">
+<meta name="twitter:description" content="说到Android端有哪些可以使用的数据库，大家首先想到的自然是SQLite这种带有官方属性加持的轻型的数据库。 不过对于像我这种基本上没有接触过SQL数据库语言编写的人来说，要通过去写难以查错且又毫不熟悉的数据库代码才能操作数据库的话，那就太令人头大了。  于是乎，便于Android开发者操作数据库的框架也就多了起来，其中人气较高的就有GreenDao、Realm，ObjectBox等，而Roo">
+<meta name="twitter:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/001-001.jpg">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="老晨子の博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/10/30/Room-Database入门指南/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Room Database入门指南 | 老晨子の博客</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+	<a href="https://github.com/asjqkkkk" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#fff; color:#151513; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">老晨子の博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">想写的时候写一些</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/30/Room-Database入门指南/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Old Chen">
+      <meta itemprop="description" content="知惑顿断如碎石，思惑难断如藕丝">
+      <meta itemprop="image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1532883475752&di=918e8ad03b17db01c84cdca20dd0ecdb&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201204%2F28%2F20120428125420_iUrGK.thumb.700_0.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="老晨子の博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Room Database入门指南
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-10-30 19:12:38 / 修改时间：19:13:28" itemprop="dateCreated datePublished" datetime="2018-10-30T19:12:38+08:00">2018-10-30</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>说到Android端有哪些可以使用的数据库，大家首先想到的自然是SQLite这种带有官方属性加持的轻型的数据库。</p>
+<p>不过对于像我这种基本上没有接触过SQL数据库语言编写的人来说，要通过去写难以查错且又毫不熟悉的数据库代码才能操作数据库的话，那就太令人头大了。</p>
+<p><img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/001-001.jpg" alt="image"></p>
+<p>于是乎，便于Android开发者操作数据库的框架也就多了起来，其中人气较高的就有GreenDao、Realm，ObjectBox等，而Room则是谷歌官方十分推荐的，可以代替SQlite的不二之选。<br><a id="more"></a><br>本篇的主要介绍对象也是Room数据库，不过在此之前，还得简单介绍一下上面提到过的其他几位，同时做个小小的对比。</p>
+<h1 id="一、介绍与比较"><a href="#一、介绍与比较" class="headerlink" title="一、介绍与比较"></a>一、介绍与比较</h1><p>由于我用过的数据库框架并不多，所以对于用过的可以说一下感受，没用过的就简单带过了。</p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><h3 id="GreenDao-和-ObjectBox"><a href="#GreenDao-和-ObjectBox" class="headerlink" title="GreenDao 和 ObjectBox"></a>GreenDao 和 ObjectBox</h3><p>在这些数据库中， <strong>GreenDao</strong> 算是早闻其名，不过一直没有用过，后来它的作者又出了个 <strong>ObjectBox</strong> ，而且你可以在 <a href="https://github.com/greenrobot/greenDAO" target="_blank" rel="noopener"><strong>GreenDao</strong>的GitHub页面</a> 找到推荐使用 <strong>ObjectBox</strong> 的 <a href="https://objectbox.io/" target="_blank" rel="noopener">ObjectBox地址</a> .</p>
+<h3 id="Realm"><a href="#Realm" class="headerlink" title="Realm"></a>Realm</h3><p>我真正使用过的还只有 <strong>Realm</strong> 数据库，这里要提一下，<strong>Realm</strong> 数据库对于中国的开发者非常的友好，就像大名鼎鼎的Glide一样， <strong>Realm</strong> 也有中文的介绍文档，文档地址在此：<br><a href="https://realm.io/cn/docs/java/latest/" target="_blank" rel="noopener">开始使用Realm</a><br>虽然这份文档对应的版本不是最新的. 不过对于初次接触 <strong>Realm</strong> 人来说，看这份文档就可以上手了</p>
+<p>最开始使用Realm的时候也是碰过不少坑，不过最主要的是所有数据库对象需要继承 <strong>RealmObject</strong> 这个类(也可以通过接口实现)，这样对项目已有的数据结构不太友好，同时我还发现继承了 <strong>RealmObject</strong> 的对象并不能与 <strong>Gson</strong> 完美结合，如果需要转换的话，还是得费一番周折的。<br>种种原因，导致我最后从项目中抽去了Realm这个数据库.</p>
+<h3 id="Room"><a href="#Room" class="headerlink" title="Room"></a>Room</h3><p>与 Realm 分手后的日子里，我并没有放弃对新的数据库的寻找，后来在浏览 Google官方文档的时候才发现了 <strong>Room</strong> 这个新的数据库，经过我一番使用后，就决定是它了！<br><img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/001-002.jpg" alt="image"></p>
+<h2 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h2><p>因为懒惰的原因，我并没有做过深入的测试，下面会给出从网上找到的关于这些数据库的对比，原文地址如下：</p>
+<p><a href="https://notes.devlabs.bg/realm-objectbox-or-room-which-one-is-for-you-3a552234fd6e" target="_blank" rel="noopener"><strong>Realm, ObjectBox or Room. Which one is for you?</strong></a></p>
+<p>然后是数据量达到 <strong>100k/10k</strong> 的时候，进行增删改查等操作消耗的时间对比：</p>
+<p><img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/001.jpeg" alt="image"><br><img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/002.jpeg" alt="image"></p>
+<p><img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/003.jpeg" alt="image"><br><img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/004.jpeg" alt="image"></p>
+<p><img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/005.jpeg" alt="image"><br><img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/006.jpeg" alt="image"></p>
+<p>可以看到，在各个方面，统统都是 <strong>ObjectBox</strong> 傲视群雄。<br>那这篇文章为什么还是要写介绍关于 <strong>Room Database</strong> 呢？</p>
+<p>首先是官方Buff加持，和介绍文档里的一句话：<br><img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/007.png" alt="image"><br><a href="https://developer.android.google.cn/training/data-storage/room/" target="_blank" rel="noopener">这里是Room的官方介绍文档地址</a></p>
+<p>大致意思就是：<strong>我们强烈建议你用Roon去代替SQLite，不过如果你是个铁头娃非得用SQLite，那我们也没有办法。</strong></p>
+<p>除了上面这段话，还有一点也可以作为选择Room的原因，就是对于Apk的“增量”是多少。据别人的测试</p>
+<blockquote>
+<p>ObjectBox和Realm分别占用1-1.5MB和3-4MB（大小取决于手机架构），而作为SQL封装的Room只占用大约50KB。在方法的增量上，Room只有300多个，ObjectBox和Realm则分别是1300和2000个</p>
+</blockquote>
+<p>当然，如果你的数据量很大的话，我觉得还是 <strong>ObjectBox</strong> 更加适合你，因为就从上面的操作数据对比来看， <strong>ObjectBox</strong> 太牛逼了！我以后肯定也会花时间去对 <strong>ObjectBox</strong> 做一番研究，不过目前还是先来介绍介绍 <strong>Room</strong> 吧。</p>
+<h1 id="二、Room的结构"><a href="#二、Room的结构" class="headerlink" title="二、Room的结构"></a>二、Room的结构</h1><p>之前有说过，<strong>Room</strong> 是可以代替 <strong>SQLite</strong> 的，不过我觉得Google推出它更多的是为了搭配 <strong>DataBinding</strong> 使用，如果你对于 <strong>DataBinding</strong> 不太熟悉，可以看一看我前面的关于 <strong>DataBinding</strong> 的文章，这里就不再赘述了。下面就开始说说 <strong>Room</strong> 的结构。</p>
+<p>Room主要分为三个部分，分别是 <strong>Database</strong>(数据库) 、<strong>Entity</strong>(实体) 、<strong>DAO</strong>(数据访问对象) </p>
+<h2 id="Database-数据库"><a href="#Database-数据库" class="headerlink" title="Database(数据库)"></a>Database(数据库)</h2><p>数据库指的就是一个数据库对象，它继承于 <strong>RoomDataBase</strong> 这个类，并且需要用 <strong>@DataBase</strong> 注解，获取这个数据库对象的方法是通过调用 <strong>Room.databaseBuilder()</strong> 或者 <strong>Room.inMemoryDatabaseBuilder()</strong> ，后者表示在内存中存储数据，如果程序结束了数据也就消失了，所以一般还是使用前者。</p>
+<h2 id="Entity-实体"><a href="#Entity-实体" class="headerlink" title="Entity(实体)"></a>Entity(实体)</h2><p>实体的概念就比较简单了，就类似于MySQL数据库里面的表，一个实体类相当于一个表，而一个实体类有多个属性，就相当于表的多个字段，这个看一看接下来关于 <strong>Entity</strong> 的代码便一目了然。</p>
+<h2 id="DAO"><a href="#DAO" class="headerlink" title="DAO"></a>DAO</h2><p>关于 <strong>DAO</strong> ，抽象的概念就表示<strong>数据访问对象</strong>，在这里简单的解释一下就是数据操作接口，可以通过编写 <strong>DAO接口</strong> 对数据库进行增删改查等一系列操作。  </p>
+<blockquote>
+<p>PS:这些接口可以支持RxJava的哦！</p>
+</blockquote>
+<p>下面是图片说明：</p>
+<p><img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/009.png" alt="image"></p>
+<h1 id="三、开始使用"><a href="#三、开始使用" class="headerlink" title="三、开始使用"></a>三、开始使用</h1><p>在 <strong>Room</strong> 的使用过程中，也是遇到一些坑的，不过都已经解决掉了。如果你也遇到过某些问题，不妨对照一下我的接入流程，说不定就找到了问题所在。</p>
+<p><img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/008.png" alt="image"></p>
+<h2 id="接入Gradle"><a href="#接入Gradle" class="headerlink" title="接入Gradle"></a>接入Gradle</h2><p>为了避免之后的单元测试出现 <font color="#DC143C">java.lang.RuntimeException: Method e in android.util.Log not mocked. See <a href="http://g.co/androidstudio/not-mocked" target="_blank" rel="noopener">http://g.co/androidstudio/not-mocked</a> for details.</font> 的错误，除了 <strong>Room</strong> 相关的依赖需要添加外，这里还需要再引用一下 <strong>robolectric单元测试库</strong> 解决问题！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">    //room数据库</span><br><span class="line">    def room_version = &quot;1.1.1&quot;</span><br><span class="line">    implementation &quot;android.arch.persistence.room:runtime:$room_version&quot;</span><br><span class="line">    annotationProcessor &quot;android.arch.persistence.room:compiler:$room_version&quot;</span><br><span class="line">    kapt &quot;android.arch.persistence.room:compiler:$room_version&quot;      // 由于要使用Kotlin,这里使用了kapt</span><br><span class="line">    implementation &quot;android.arch.persistence.room:rxjava2:$room_version&quot;        //之后会用到rxjava，所以这里也可以有</span><br><span class="line">//    implementation &quot;android.arch.persistence.room:guava:$room_version&quot;        //由于我们不用guava，这行注释掉</span><br><span class="line">    testImplementation &quot;android.arch.persistence.room:testing:$room_version&quot; </span><br><span class="line">    </span><br><span class="line">    //robolectric测试</span><br><span class="line">    testImplementation &apos;org.robolectric:shadows-multidex:3.8&apos;</span><br><span class="line">    testImplementation &quot;org.robolectric:robolectric:3.8&quot;</span><br><span class="line">    //这样就资瓷单元测试咯！</span><br></pre></td></tr></table></figure>
+<p>和我一样使用Kotlin的童鞋别忘了下面这行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apply plugin: &apos;kotlin-kapt&apos;</span><br></pre></td></tr></table></figure>
+<p>还有，需要做如下更改：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">androidTestImplementation &apos;com.android.support.test:runner:1.0.2&apos;</span><br><span class="line"></span><br><span class="line">//更改为</span><br><span class="line">implementation &apos;com.android.support.test:runner:1.0.2&apos;</span><br></pre></td></tr></table></figure>
+<p>这点一定要改哦！不然会出现一些莫名其妙的问题</p>
+<p>相关库的依赖成功添加后就可以开始动手了！</p>
+<h2 id="创建-Entity、Dao-与-DataBase"><a href="#创建-Entity、Dao-与-DataBase" class="headerlink" title="创建 Entity、Dao 与 DataBase"></a>创建 Entity、Dao 与 DataBase</h2><h3 id="创建Entity"><a href="#创建Entity" class="headerlink" title="创建Entity"></a>创建Entity</h3><p>首先，创建一个 <strong>Entity</strong> 对象，就把它命名为 <strong>Book</strong> 吧</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@Entity</span><br><span class="line">class Book(@field:ColumnInfo(name = &quot;book_name&quot;)</span><br><span class="line">           var bookName: String?, var author: String?, var type: String?) &#123;</span><br><span class="line"></span><br><span class="line">    @PrimaryKey(autoGenerate = true)</span><br><span class="line">    var id: Int = 0</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Book</strong> 有三个属性，分别表示书名、作者、类型。其中有三点需要注意：</p>
+<ul>
+<li>每个 <strong>Entity对象</strong> 都需要使用 <strong>@Entity</strong> 注释声明</li>
+<li><strong>@PrimaryKey</strong> 注释用于声明主键，这里还添加了 autoGenerate = true，表示它是自增的</li>
+<li><strong>@ColumnInfo</strong> 注释用来给属性设置别名，如果 <strong>bookName</strong> 属性不设置别名的话，查询的时候可以通过 “<strong>bookName</strong>”进行查询，设置别名后就可以通过设置的“<strong>book_name</strong>” 进行查询了，看 <strong>DAO接口</strong> 便知</li>
+</ul>
+<h3 id="创建-DAO"><a href="#创建-DAO" class="headerlink" title="创建 DAO"></a>创建 DAO</h3><p>这里，通过 <strong>DAO接口</strong> 来对 <strong>Book</strong> 这个对象进行增删改查：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">@Dao</span><br><span class="line">interface BookDao &#123;</span><br><span class="line"></span><br><span class="line">    @get:Query(&quot;SELECT * FROM book&quot;)</span><br><span class="line">    val all: List&lt;Book&gt;</span><br><span class="line"></span><br><span class="line">    @Query(&quot;SELECT * FROM book WHERE author LIKE :author&quot;)</span><br><span class="line">    fun getBookByAuthor(author: String): List&lt;Book&gt;</span><br><span class="line"></span><br><span class="line">    @Query(&quot;SELECT * FROM book WHERE book_name LIKE :name&quot;)</span><br><span class="line">    fun getBookByNamer(name: String): List&lt;Book&gt;</span><br><span class="line"></span><br><span class="line">    @Insert</span><br><span class="line">    fun insert(book: Book): Long?</span><br><span class="line"></span><br><span class="line">    @Insert</span><br><span class="line">    fun insert(vararg books: Book): List&lt;Long&gt;</span><br><span class="line"></span><br><span class="line">    @Insert</span><br><span class="line">    fun insert(books: List&lt;Book&gt;): List&lt;Long&gt;</span><br><span class="line"></span><br><span class="line">    @Update</span><br><span class="line">    fun update(book: Book): Int</span><br><span class="line"></span><br><span class="line">    @Update</span><br><span class="line">    fun update(vararg books: Book): Int</span><br><span class="line"></span><br><span class="line">    @Update</span><br><span class="line">    fun update(books: List&lt;Book&gt;): Int</span><br><span class="line"></span><br><span class="line">    @Delete</span><br><span class="line">    fun delete(book: Book): Int</span><br><span class="line"></span><br><span class="line">    @Delete</span><br><span class="line">    fun delete(vararg books: Book): Int</span><br><span class="line"></span><br><span class="line">    @Delete</span><br><span class="line">    fun delete(books: List&lt;Book&gt;): Int</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的 <strong>DAO接口</strong>，同样需要进行几点说明：</p>
+<ul>
+<li><strong>DAO接口</strong> 需要使用 <strong>@Dao</strong> 注释进行声明</li>
+<li><strong>Insert</strong> 操作可以使用 <strong>Long</strong> 作为返回值的类型，表示插入操作前的对象数量</li>
+<li><strong>Update</strong> 和 <strong>Delete</strong> 操作可以使用 Int 作为返回值，表示更新或者删除的行数</li>
+<li>返回类型还可以是 <strong>void</strong> ，如果结合 <strong>Rxjava</strong> 使用的话还可以是 <strong>Completable、Single、 Maybe、Flowable</strong>等，具体可以参见这篇文章：<a href="https://medium.com/androiddevelopers/room-rxjava-acb0cd4f3757" target="_blank" rel="noopener">Room 🔗 RxJava</a>(需要备好梯子，不过后续有时间的话我也会介绍一下Room搭配Rxjava的使用)</li>
+</ul>
+<p><strong>Dao接口</strong> 编写完成后，还剩下最重要的 <strong>DataBase</strong></p>
+<h3 id="创建-DataBase"><a href="#创建-DataBase" class="headerlink" title="创建 DataBase"></a>创建 DataBase</h3><blockquote>
+<p>由于实例化一个 <strong>RoomDatabase</strong> 对象的开销是比较大的，所以 <strong>DataBase</strong> 的使用需要遵循单例模式，只在全局创建一个实例即可。</p>
+</blockquote>
+<p>这里为了方便理解，还是使用java代码去创建一个 <strong>BookDataBase类</strong>，当然，转换成Kotlin只需要Shift + Alt + Ctrl + K 即可</p>
+<p>如果你使用的是饿汉式的单例模式，在Kotlin中通过object修饰可达到同样效果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">@Database(entities = &#123;Book.class&#125;, version = 1)</span><br><span class="line">public abstract class BookDataBase extends RoomDatabase &#123;</span><br><span class="line">    public abstract BookDao bookDao();</span><br><span class="line">    private static BookDataBase instance;</span><br><span class="line"></span><br><span class="line">    public static BookDataBase getInstance(Context context)&#123;</span><br><span class="line">        if (instance == null)&#123;</span><br><span class="line">            synchronized (BookDataBase.class)&#123;</span><br><span class="line">                if (instance == null)&#123;</span><br><span class="line">                    instance = create(context);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return instance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private static BookDataBase create(Context context) &#123;</span><br><span class="line">        return Room.databaseBuilder( context,BookDataBase.class,&quot;book-db&quot;).allowMainThreadQueries().build();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面的例子中有一些需要特别注意：</p>
+<ul>
+<li><strong>@Database</strong> 注释用于进行声明，同时还需要有相关的 <strong>entity对象</strong>，其中 <strong>version</strong> 是当前数据库的版本号，如果你对数据相关的<strong>实体类结构</strong>进行了更改，这里的 <strong>version</strong> 就需要<strong>加一</strong></li>
+<li><strong>BookDataBase</strong> 除了继承于 <strong>RoomDatabase</strong> ，还需要实例出相关的 <strong>DAO接口</strong></li>
+<li>create()方法中的”<strong>book-db</strong>“是数据库的名字，这里随意，不过需要注意的是 <strong>allowMainThreadQueries()</strong> 方法，这里由于我们会用到单元测试，所以加上这行代码是为了防止 【<em>Cannot access database on the main thread since it may potentially lock the UI for a long period of time.</em>】 的报错。正式使用时，请务必去掉这行代码，因为它会让所有耗时操作运行在主线程！</li>
+</ul>
+<p>到这里，我们就可以先愉快的进行测试了.</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><h3 id="初级测试"><a href="#初级测试" class="headerlink" title="初级测试"></a>初级测试</h3><p>找到 <strong>src</strong> 下的 <strong>test</strong> 目录，然后可以像我这样创建一个 <strong>RoomTest</strong> 类进行测试</p>
+<p><img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/010.png" alt="image"></p>
+<p>说到这里，可能会有童鞋尚未了解过单元测试，这时候你可以先去看看相关博客，比如这篇</p>
+<p><a href="https://juejin.im/post/5b57e3fbf265da0f47352618" target="_blank" rel="noopener">Android 单元测试只看这一篇就够了</a></p>
+<p>不过这里使用的单元测试是 Android Studio 自带的，也没有用到太复杂的东西，同时我会做一些说明，不够了解的童鞋也可以继续往下看，看完你也就了解了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">@RunWith(AndroidJUnit4::class)</span><br><span class="line">class RoomTest &#123;</span><br><span class="line"></span><br><span class="line">    private var bookDao: BookDao? = null</span><br><span class="line">    private var bookDataBase: BookDataBase? = null</span><br><span class="line"></span><br><span class="line">    @Before</span><br><span class="line">    @Throws(Exception::class)</span><br><span class="line">    fun setUp() &#123;</span><br><span class="line">        ShadowLog.stream = System.out      //这样方便打印日志</span><br><span class="line">        val context = InstrumentationRegistry.getTargetContext()</span><br><span class="line">        bookDataBase = BookDataBase.getInstance(context)</span><br><span class="line">        bookDao = bookDataBase!!.bookDao()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    fun insert() &#123;</span><br><span class="line">        val book1 = Book(&quot;时间简史&quot;, &quot;斯蒂芬·威廉·霍金&quot;, &quot;科学&quot;)</span><br><span class="line">        val book2 = Book(&quot;百年孤独&quot;, &quot;西亚·马尔克斯&quot;, &quot;文学&quot;)</span><br><span class="line">        val list = bookDao!!.insert(book1, book2)</span><br><span class="line"></span><br><span class="line">        assert(list.size == 2)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    fun query()&#123;</span><br><span class="line">        val books = bookDao!!.all</span><br><span class="line">        for (book in books) &#123;</span><br><span class="line">            Log.e(javaClass.name, &quot;获取的书籍数据: $&#123;Gson().toJson(book)&#125;&quot;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @After</span><br><span class="line">    @Throws(Exception::class)</span><br><span class="line">    fun cloaseDb() &#123;</span><br><span class="line">        bookDataBase?.close()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，这里的单元测试使用的是 <strong>AndroidJUnit4</strong>，通过 <strong>@Before</strong> 注释的方法，表示用于<strong>相关资源的初始化</strong>，类似于Activity的onCreate()方法；而通过 <strong>@After</strong> 注释的方法，则是用于<strong>相关资源的销毁</strong>，类似于Activity的onDestroy()方法。</p>
+<p>剩下的，通过 <strong>@Test</strong> 注释的方法就表示用于测试的单元，每个测试类里面可以有多个测试单元，这里目前只写了插入和查询两个单元，在 <strong>RoomTest</strong> 类上通过右键运行，然后看一下结果：<br><img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/011.png" alt="image"></p>
+<p>在测试代码中的 <strong>insert()单元 </strong> 里，有这样一行代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">assert(list.size == 2)</span><br></pre></td></tr></table></figure>
+<p>而测试的结果是一片绿色，就表示这个断言是正确的，list列表长度刚好为2，这里为了验证返回的list是整个数据库长度还是仅仅表示此次进行插入操作的长度，我们修改一下 insert()测试单元：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@Test</span><br><span class="line"> fun insert() &#123;</span><br><span class="line">     val book1 = Book(&quot;时间简史&quot;, &quot;斯蒂芬·威廉·霍金&quot;, &quot;科学&quot;)</span><br><span class="line">     val book2 = Book(&quot;百年孤独&quot;, &quot;西亚·马尔克斯&quot;, &quot;文学&quot;)</span><br><span class="line">     val list = bookDao!!.insert(book1, book2)</span><br><span class="line">     assert(list.size == 2)</span><br><span class="line"></span><br><span class="line">     val list2 = bookDao!!.insert(book1, book2)</span><br><span class="line">     assert(list2.size == 4)</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>这时候在 <strong>insert()单元测试区域</strong> 右键运行，就只测试这一个单元，然后结果如下：</p>
+<p><img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/012.png" alt="image"></p>
+<p>我们在 insert()单元 中进行了两次插入操作，所以数据库的总长度应该为 4 ，而这里第39行的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">assert(list2.size == 4)</span><br></pre></td></tr></table></figure>
+<p>返回的cede 是 -1，就表示实际上每次插入操作返回的列表长度应该为插入的数量，而非数据库总量。其他操作亦是如此。</p>
+<p>在单元测试中，我们的测试并不能直接用于正式的项目中，因为数据库操作属于耗时操作，所以一定不能把这些操作放在主线程里，而最方便的线程切换，莫过于 <strong>Rxjava</strong> 啦！</p>
+<p>现在开始使用 <strong>Rxjava</strong> 进行测试吧</p>
+<h3 id="结合Rxjava的测试"><a href="#结合Rxjava的测试" class="headerlink" title="结合Rxjava的测试"></a>结合Rxjava的测试</h3><p>首先，要在项目中添加 <strong>Rxjava</strong> 的依赖：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//rxJava2+rxAndroid</span><br><span class="line">implementation &quot;io.reactivex.rxjava2:rxjava:2.x.y&quot;</span><br><span class="line">implementation &apos;io.reactivex.rxjava2:rxandroid:2.1.0&apos;</span><br></pre></td></tr></table></figure>
+<p>在单元测试中，RxJava 如果做 <strong>IO线程</strong> 到 <strong>UI线程</strong> 的切换操作，结果是无法获取的，所以需要将这些线程进行合并，方法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">@Before</span><br><span class="line">@Throws(Exception::class)</span><br><span class="line">fun setUp() &#123;</span><br><span class="line">    val context = InstrumentationRegistry.getTargetContext()</span><br><span class="line">    bookDataBase = BookDataBase.getInstance(context)</span><br><span class="line">    bookDao = bookDataBase!!.bookDao()</span><br><span class="line">    ShadowLog.stream = System.out</span><br><span class="line"></span><br><span class="line">    initRxJava2()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private fun initRxJava2() &#123;</span><br><span class="line">    RxJavaPlugins.reset()</span><br><span class="line">    RxJavaPlugins.setIoSchedulerHandler &#123; Schedulers.trampoline() &#125;</span><br><span class="line">    RxAndroidPlugins.reset()</span><br><span class="line">    RxAndroidPlugins.setMainThreadSchedulerHandler &#123; Schedulers.trampoline() &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 <strong>@Before注解</strong> 下的 <strong>setUp()</strong> 方法中进行RxJava的配置，然后我们可以把RxJava常用的线程切换写在一个方法里，方便复用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">private fun&lt;T&gt; doWithRxJava(t: T): Observable&lt;T&gt;&#123;</span><br><span class="line">    return Observable.create&lt;T&gt;&#123;it.onNext(t)&#125;</span><br><span class="line">            .subscribeOn(Schedulers.io())</span><br><span class="line">            .unsubscribeOn(Schedulers.io())</span><br><span class="line">            .observeOn(AndroidSchedulers.mainThread())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接着，对 <strong>insert单元</strong> 和 <strong>query单元</strong> 进行修改：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">@Test</span><br><span class="line">fun insert() &#123;</span><br><span class="line">    val book1 = Book(&quot;时间简史&quot;, &quot;斯蒂芬·威廉·霍金&quot;, &quot;科学&quot;)</span><br><span class="line">    val book2 = Book(&quot;百年孤独&quot;, &quot;西亚·马尔克斯&quot;, &quot;文学&quot;)</span><br><span class="line">    doWithRxJava(bookDao!!.insert(book1, book2))</span><br><span class="line">            .subscribe (&#123;</span><br><span class="line">                Log.e(&quot;insert长度：&quot; , &quot;$&#123;it.size&#125;&quot;)</span><br><span class="line">                assert(it.size == 2)</span><br><span class="line">            &#125;,&#123;</span><br><span class="line">                Log.e(&quot;insert出错：&quot; , &quot;$&#123;it.stackTrace&#125;-$&#123;it.message&#125;&quot;)</span><br><span class="line">            &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Test</span><br><span class="line">fun query()&#123;</span><br><span class="line">    doWithRxJava(bookDao?.all)</span><br><span class="line">            .subscribe(&#123;</span><br><span class="line">                for(book in it?: emptyList())&#123;</span><br><span class="line">                    Log.e(javaClass.name, &quot;获取的书籍数据: $&#123;Gson().toJson(book)&#125;&quot;)</span><br><span class="line">                    assert(it?.size == 2)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,&#123;</span><br><span class="line">                Log.e(&quot;query出错：&quot; , &quot;$&#123;it.stackTrace&#125;-$&#123;it.message&#125;&quot;)</span><br><span class="line">            &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后看一下测试的结果：</p>
+<p><img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/013.png" alt="image"></p>
+<p>那么， <strong>Room DataBase</strong> 的入门指南，就写到这里啦！</p>
+<p>后续我可能会再写一篇进阶版的文章，涵盖了真实使用的场景，然后看能不能写一个简单的Demo出来，这样更方便学习吧！</p>
+<p><del><em>不过我发现我现在的懒癌是越来越严重了，也不知道下一篇是什么时候</em></del></p>
+<p><img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Room-Database/014.png" alt="image"></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/20/DataBinding——从相识到相知（二）：互酌/" rel="next" title="DataBinding——从相识到相知（二）：互酌">
+                <i class="fa fa-chevron-left"></i> DataBinding——从相识到相知（二）：互酌
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1532883475752&di=918e8ad03b17db01c84cdca20dd0ecdb&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201204%2F28%2F20120428125420_iUrGK.thumb.700_0.jpeg"
+                alt="Old Chen" />
+            
+              <p class="site-author-name" itemprop="name">Old Chen</p>
+              <p class="site-description motion-element" itemprop="description">知惑顿断如碎石，思惑难断如藕丝</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/asjqkkkk" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://blog.csdn.net/asjqkkkk" target="_blank" title="csdn"><i class="fa fa-fw fa-rss-square"></i>csdn</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、介绍与比较"><span class="nav-number">1.</span> <span class="nav-text">一、介绍与比较</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.1.</span> <span class="nav-text">介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GreenDao-和-ObjectBox"><span class="nav-number">1.1.1.</span> <span class="nav-text">GreenDao 和 ObjectBox</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Realm"><span class="nav-number">1.1.2.</span> <span class="nav-text">Realm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Room"><span class="nav-number">1.1.3.</span> <span class="nav-text">Room</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#比较"><span class="nav-number">1.2.</span> <span class="nav-text">比较</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、Room的结构"><span class="nav-number">2.</span> <span class="nav-text">二、Room的结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Database-数据库"><span class="nav-number">2.1.</span> <span class="nav-text">Database(数据库)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Entity-实体"><span class="nav-number">2.2.</span> <span class="nav-text">Entity(实体)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DAO"><span class="nav-number">2.3.</span> <span class="nav-text">DAO</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、开始使用"><span class="nav-number">3.</span> <span class="nav-text">三、开始使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#接入Gradle"><span class="nav-number">3.1.</span> <span class="nav-text">接入Gradle</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建-Entity、Dao-与-DataBase"><span class="nav-number">3.2.</span> <span class="nav-text">创建 Entity、Dao 与 DataBase</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建Entity"><span class="nav-number">3.2.1.</span> <span class="nav-text">创建Entity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建-DAO"><span class="nav-number">3.2.2.</span> <span class="nav-text">创建 DAO</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建-DataBase"><span class="nav-number">3.2.3.</span> <span class="nav-text">创建 DataBase</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试"><span class="nav-number">3.3.</span> <span class="nav-text">测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初级测试"><span class="nav-number">3.3.1.</span> <span class="nav-text">初级测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结合Rxjava的测试"><span class="nav-number">3.3.2.</span> <span class="nav-text">结合Rxjava的测试</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">oldchen</span>
+
+  
+
+  
+</div>
+
+
+
+
+   <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div> 
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Mist</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":75,"height":150},"mobile":{"show":true},"log":false});</script></body>
+</html>
