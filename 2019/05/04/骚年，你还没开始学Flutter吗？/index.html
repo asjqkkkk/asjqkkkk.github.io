@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="开场闲聊在去年12月份的Flutter Live 2018上，谷歌的Flutter团队宣布Flutter 1.0 release版正式发布。 想必很多小伙伴和我一样，都是从那个时候开始了解到Flutter的，而我也是顺带从那个时候入了Flutter的坑。 不过应该还有一部分小伙伴对Flutter只是略有耳闻，甚至闻所未闻。为了把这部分小伙伴拉到这个 “大坑” 里面来，我不得不在这里向你们展示Flu">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="骚年，你还没开始学Flutter吗？">
+<meta property="og:url" content="http://yoursite.com/2019/05/04/骚年，你还没开始学Flutter吗？/index.html">
+<meta property="og:site_name" content="老晨子の博客">
+<meta property="og:description" content="开场闲聊在去年12月份的Flutter Live 2018上，谷歌的Flutter团队宣布Flutter 1.0 release版正式发布。 想必很多小伙伴和我一样，都是从那个时候开始了解到Flutter的，而我也是顺带从那个时候入了Flutter的坑。 不过应该还有一部分小伙伴对Flutter只是略有耳闻，甚至闻所未闻。为了把这部分小伙伴拉到这个 “大坑” 里面来，我不得不在这里向你们展示Flu">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/introduce_flutter/001.png">
+<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/introduce_flutter/002.gif">
+<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/introduce_flutter/003.gif">
+<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/introduce_flutter/004.png">
+<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/introduce_flutter/005.png">
+<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/introduce_flutter/007.gif">
+<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/introduce_flutter/008.png">
+<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/apk/apk.png">
+<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/introduce_flutter/009.jpg">
+<meta property="og:updated_time" content="2019-05-04T07:37:54.382Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="骚年，你还没开始学Flutter吗？">
+<meta name="twitter:description" content="开场闲聊在去年12月份的Flutter Live 2018上，谷歌的Flutter团队宣布Flutter 1.0 release版正式发布。 想必很多小伙伴和我一样，都是从那个时候开始了解到Flutter的，而我也是顺带从那个时候入了Flutter的坑。 不过应该还有一部分小伙伴对Flutter只是略有耳闻，甚至闻所未闻。为了把这部分小伙伴拉到这个 “大坑” 里面来，我不得不在这里向你们展示Flu">
+<meta name="twitter:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/introduce_flutter/001.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="老晨子の博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/05/04/骚年，你还没开始学Flutter吗？/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>骚年，你还没开始学Flutter吗？ | 老晨子の博客</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+	<a href="https://github.com/asjqkkkk" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#fff; color:#151513; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">老晨子の博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">想写的时候写一些</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/04/骚年，你还没开始学Flutter吗？/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Old Chen">
+      <meta itemprop="description" content="知惑顿断如碎石，思惑难断如藕丝">
+      <meta itemprop="image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1532883475752&di=918e8ad03b17db01c84cdca20dd0ecdb&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201204%2F28%2F20120428125420_iUrGK.thumb.700_0.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="老晨子の博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">骚年，你还没开始学Flutter吗？
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-05-04 15:37:25 / 修改时间：15:37:54" itemprop="dateCreated datePublished" datetime="2019-05-04T15:37:25+08:00">2019-05-04</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="开场闲聊"><a href="#开场闲聊" class="headerlink" title="开场闲聊"></a>开场闲聊</h1><p>在去年12月份的Flutter Live 2018上，谷歌的Flutter团队宣布<strong>Flutter 1.0 release版</strong>正式发布。</p>
+<p>想必很多小伙伴和我一样，都是从那个时候开始了解到Flutter的，而我也是顺带从那个时候入了Flutter的坑。</p>
+<p>不过应该还有一部分小伙伴对Flutter只是略有耳闻，甚至闻所未闻。为了把这部分小伙伴拉到这个 <strong>“大坑”</strong> 里面来，我不得不在这里向你们展示<strong>Flutter的魅力</strong>所在，同时为了保持客观公正，我也会介绍一些我遇到过的<strong>Flutter的麻烦</strong>之处。<br>就像谈恋爱一样，因为优点才会在一起，也因为接受得了缺点才能使情感继续保持。</p>
+<p><img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/introduce_flutter/001.png" alt="image"></p>
+<p>话不多说，接下来就由我来为诸位展示Flutter所具备的这些的特性吧。<br><a id="more"></a> </p>
+<h1 id="Flutter的特性"><a href="#Flutter的特性" class="headerlink" title="Flutter的特性"></a>Flutter的特性</h1><p>在我看来，Flutter的特性主要分为两类，分别是<strong>高效性</strong>与<strong>舒适性</strong>，这两者都会是你在进行Flutter开发时最直观的感受，而下面的这些特性从侧面也会展示出这部分效果</p>
+<h3 id="一、热重载"><a href="#一、热重载" class="headerlink" title="一、热重载"></a>一、热重载</h3><p>热重载大家应该都耳熟能详了，和前端开发一样，对代码进行修改后，可以即时看到效果，这点相比于原生开发每次做了一点修改就要从头到尾编译一次不知道高到哪里去了！</p>
+<p>下面是一点简单的演示效果：</p>
+<p><img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/introduce_flutter/002.gif" alt="image"></p>
+<p>可以看到，热重载带来的体验提升是巨大的！作为一名原生开发者，你心动了吗？</p>
+<p><img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/introduce_flutter/003.gif" alt="image"></p>
+<p>不过关于热重载还有一些需要说明的地方，在用到可以保存状态的控件时，热重载不能将状态重置，比如说一个动画控件，在动画结束后再进行热重载是无法再次播放动画的（除非你对动画做了循环处理），所以有的时候你看着觉得热重载没效果，这时候就要考虑是不是用到了 <strong>StatefulWidget</strong> 之类的控件。</p>
+<p>Flutter将热重载作为一个亮点，不过由于Flutter的布局是用代码去写的，和Android中的xml不同，它无法进行实时预览，所以你无法想象没有热重载的话，要怎么面对Flutter进行编程，这么看来热重载既是亮点，也是要点。</p>
+<h3 id="二、万物基于Widget"><a href="#二、万物基于Widget" class="headerlink" title="二、万物基于Widget"></a>二、万物基于Widget</h3><p>Flutter中的页面都是由一个个的Widget组合而成，甚至连页面本身也是一个Widget，Widget与android中的组件类似，不过前者具有更好的组合性。<br>同时Flutter已经封装了许多简单好用的Widget，使用起来非常方便。</p>
+<p>比如在android中你想创建下面这样一个圆，你需要重新写一个xml，并在xml定义各种属性：</p>
+<p><img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/introduce_flutter/004.png" alt="image"></p>
+<p>而在Flutter中实现是非常容易的：</p>
+<p><img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/introduce_flutter/005.png" alt="image"></p>
+<p>不管是圆形，还是圆角矩形，又或者是不对称圆角矩形，Flutter都提供了很方便的实现方法。</p>
+<p>关于Widget可以看到代码的结构是一层一层的，对于初次接触的人来说想必是很难接受这种代码格式。因为我当初看到Flutter这样的代码时，还产生过劝退的想法，不过写了一段时间后还是觉得蛮带感的。打个比方的话就像初见JoJo和再见JoJo的感觉。</p>
+<p>在android中视图在xml中，代码则由java负责，在习惯了flutter后，我觉得用代码直接去创建视图也未尝不是一种好的解决方法，毕竟xml+java也算历史悠久了。而我也接触过一个前端框架——Vue，flutter的这种结构和vue的就非常类似。</p>
+<p>孰好孰坏因人而异，想必等你使用过一段时间后的flutter后心中会有着一个自己的答案。</p>
+<h3 id="三、跨平台"><a href="#三、跨平台" class="headerlink" title="三、跨平台"></a>三、跨平台</h3><p>跨平台其实是flutter最突出的一个特点了，与其他如React、Week这类跨平台框架不同，Flutter作为后起之秀能脱颖而出与其性能表现和稳点程度是有很大关系的。</p>
+<p>在Flutter Live 2018上，官方已经放出了好几个纯Flutter的应用，并演示了他们在android和ios上的运行效果，其中最为惊艳的就是 <strong>《The History Of Everything》</strong> 了，下面给大家简单的展示一下真机运行效果：</p>
+<p><img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/introduce_flutter/007.gif" alt="image"></p>
+<p>想自行体验的话可以去Google Play或者App Store中下载</p>
+<p>上面应用中的动画大部分由 <strong>Flare</strong> 实现，具体可以参见 <a href="https://www.2dimensions.com/" target="_blank" rel="noopener">2dimensions(需科学上网)</a>，这样可以跑满60帧的矢量动画也只是Flutter性能展现的一面，在跨平台上，其最大的特点就是<strong>接近原生效果</strong>。</p>
+<p>不过目前而言，flutter在跨平台上有一些问题还是需要完善的。比如视频的播放<br>具体原因可以看这篇文章：<a href="https://www.yuque.com/xytech/flutter/pfpo68" target="_blank" rel="noopener">万万没想到——flutter这样外接纹理</a></p>
+<p>还有那些需要用到第三方sdk的时候，可能就需要做双端的channel通信了，但是也有比较积极的团队专门做了flutter的sdk，<strong>声网</strong>就是其中之一</p>
+<h3 id="四、年轻"><a href="#四、年轻" class="headerlink" title="四、年轻"></a>四、年轻</h3><p>年轻是flutter的一大优势，同时也是一大劣势。</p>
+<p>就像上面说的，许多第三方sdk还没有开始为flutter做适配，所以flutter的开发生态自然比不了其他技术框架和平台，然而因其发展的势头非常迅猛，所以这其实也是一个机会。大量的开发者可以在这个领域再做建树，未来会是何种状况还是非常令人期待的。</p>
+<p>如同 <strong>Kotlin</strong> 一样，现阶段如果去看国外的一些技术博客，如 <strong>Medium</strong> 里关于 Android 的，大部分语言都已经是kotlin的了，只是国内的博客可能普及度还没有那么高。但是良禽择木而栖，趋势一直都在，怎么选择就看个人了。</p>
+<p>也正是因为flutter比较年轻，所以有些东西还没有一个既定的公认的解决方案。就比如flutter开发过程中都会遇到的 <strong>状态管理</strong>。</p>
+<p>目前flutter中的状态管理框架有许多，最知名的比如从前端引鉴过来的 <strong>Redux</strong>，同时还有 <strong>Bloc</strong>， <strong>Provide</strong> 等。每个状态管理框架解决的范围都不一样，学习成本也各有差异，如何选择还是需要看项目需求与个人喜好。<br>具体选择可以看这篇文章：<a href="https://juejin.im/post/5bac54c45188255c681589d3" target="_blank" rel="noopener">（译）让我来帮你理解和选择Flutter状态管理方案</a></p>
+<h3 id="五、Dart语言"><a href="#五、Dart语言" class="headerlink" title="五、Dart语言"></a>五、Dart语言</h3><p>flutter的开发语言使用的是dart，对于刚接触kotlin的同学来说，再去使用dart想必是一件很苦恼的事情。</p>
+<p>比如kotlin中用 <strong>var表示变量(variable)</strong>，<strong>val表示常量(value)</strong>，而到了dart中虽然可以用var表示变量，但是常量还是只能用final或者const去修饰。</p>
+<p>从很多方面看来kotlin都算是算是采各家所长集于一身，而dart则像是修行还没结束就半路出山了。</p>
+<p>不过因为对比对象是kotlin，所以dart显得不那么出色，其实dart还是有很多好用的点的。</p>
+<p>比如</p>
+<h4 id="调用前做对象判空："><a href="#调用前做对象判空：" class="headerlink" title="调用前做对象判空："></a>调用前做对象判空：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//kotlin</span><br><span class="line">a?.m()</span><br><span class="line">//dart</span><br><span class="line">a?.m()</span><br></pre></td></tr></table></figure>
+<p>不同之处在于kotlin如果对象为空则不做处理,同时要求你做对象为空时的赋值，dart如果对象为空则返回null,</p>
+<h4 id="对象为空时赋值"><a href="#对象为空时赋值" class="headerlink" title="对象为空时赋值"></a>对象为空时赋值</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//kotlin</span><br><span class="line">var x = a?.b ?: c</span><br><span class="line">//dart</span><br><span class="line">var x = a?.b ?? c</span><br></pre></td></tr></table></figure>
+<p>两者区别不大.不过dart中还可以使用 ??= 代替?? ,区别是前者可以单独作为赋值语句</p>
+<p>dart虽然在使用上不及kotlin那么舒适，但dart也一直在更新换代，优秀的语言发展到最后一定是有很多共同性的，所以不要过于纠结于语言的选择上，因为它终究只是一种工具。</p>
+<h1 id="结束闲聊"><a href="#结束闲聊" class="headerlink" title="结束闲聊"></a>结束闲聊</h1><p>从去年12月flutter发布1.0 release版本到今天，flutter已经迭代了好多个版本了</p>
+<p><img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/introduce_flutter/008.png" alt="image"></p>
+<p>而我在使用过程中确实遇到过一些问题，或简单或麻烦，但大部分都有了解决方案。从稳定性上来讲，使用flutter的交互其实就是对数据进行操作，而正是因为这样，做到了视图与数据分离，所以出bug的情况要少得多。</p>
+<p>为什么我要介绍flutter甚至是鼓励各位原生开发者们去学flutter，主要原因有两个：</p>
+<ul>
+<li>一、学习flutter的成本很低，因为它难度不大</li>
+<li>二、从flutter的性能表现上来看，它是可以代替原生应用的，只是现在火候不够</li>
+</ul>
+<p>所以对于现阶段的初中级原生开发者而言，我建议你一定要抽出时间去了解了解flutter，因为大部分你能通过原生去实现的东西，用flutter一样也是可以的，并且还更加轻松，还可以跨平台。</p>
+<p>写到这里，文章中也很少涉及到技术上的东西，主要还是以介绍为主</p>
+<p>下面再介绍一点点我非常推荐的学习flutter的途径吧：</p>
+<p>1、 <strong>首先自然是Youtube上flutter官方的视频项目(科学上网)：<br><a href="https://www.youtube.com/channel/UCwXdFgeE9KYzlDdR7TG9cMw" target="_blank" rel="noopener">Flutter</a></strong></p>
+<p>这里面有个超赞的系列，就是每周一更的 <strong>Flutter Widget of the Week</strong></p>
+<p>2、<strong>然后你也可以关注B站的</strong> <strong><a href="https://space.bilibili.com/64169458/" target="_blank" rel="noopener">Google中国账号</a></strong></p>
+<p>其中的视频都有中文翻译，可以找到关于flutter的学习视频，不过和youtube上相比更新要慢很多</p>
+<p>3、<strong><a href="https://book.flutterchina.club/" target="_blank" rel="noopener">《Flutter实战》</a></strong></p>
+<p>万分感谢这位作者开源这本技术书！</p>
+<p>剩下的学习途径还有许多，不过学习也是发散的，知道上面三个后，其他的途径于你也不在话下了。</p>
+<p>最后再介绍一个学习途径</p>
+<p><img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/apk/apk.png" alt="image"></p>
+<p>没错，就是我用flutter写的一个小项目</p>
+<p><img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/introduce_flutter/009.jpg" alt="image"></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/19/Flutter图文混排原生实现方案/" rel="next" title="Flutter图文混排原生实现方案">
+                <i class="fa fa-chevron-left"></i> Flutter图文混排原生实现方案
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1532883475752&di=918e8ad03b17db01c84cdca20dd0ecdb&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201204%2F28%2F20120428125420_iUrGK.thumb.700_0.jpeg"
+                alt="Old Chen" />
+            
+              <p class="site-author-name" itemprop="name">Old Chen</p>
+              <p class="site-description motion-element" itemprop="description">知惑顿断如碎石，思惑难断如藕丝</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/asjqkkkk" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://blog.csdn.net/asjqkkkk" target="_blank" title="csdn"><i class="fa fa-fw fa-rss-square"></i>csdn</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#开场闲聊"><span class="nav-number">1.</span> <span class="nav-text">开场闲聊</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Flutter的特性"><span class="nav-number">2.</span> <span class="nav-text">Flutter的特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、热重载"><span class="nav-number">2.0.1.</span> <span class="nav-text">一、热重载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、万物基于Widget"><span class="nav-number">2.0.2.</span> <span class="nav-text">二、万物基于Widget</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、跨平台"><span class="nav-number">2.0.3.</span> <span class="nav-text">三、跨平台</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、年轻"><span class="nav-number">2.0.4.</span> <span class="nav-text">四、年轻</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、Dart语言"><span class="nav-number">2.0.5.</span> <span class="nav-text">五、Dart语言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#调用前做对象判空："><span class="nav-number">2.0.5.1.</span> <span class="nav-text">调用前做对象判空：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对象为空时赋值"><span class="nav-number">2.0.5.2.</span> <span class="nav-text">对象为空时赋值</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结束闲聊"><span class="nav-number">3.</span> <span class="nav-text">结束闲聊</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">oldchen</span>
+
+  
+
+  
+</div>
+
+
+
+
+   <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div> 
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Mist</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":75,"height":150},"mobile":{"show":true},"log":false});</script></body>
+</html>
