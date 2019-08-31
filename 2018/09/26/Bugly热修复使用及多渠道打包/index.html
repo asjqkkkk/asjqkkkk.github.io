@@ -1,395 +1,111 @@
 <!DOCTYPE html>
+<html lang="zh-CN">
 
 
 
 
 
-
-
-
-
-
-
-
-  
-
-
-<html class="theme-next mist use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
-<meta name="theme-color" content="#222">
-
-
-
-
-
-
-
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
-
-
-
-
-
-
-
-
-
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Mist',
-    version: '6.3.0',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: false,
-    fastclick: false,
-    lazyload: false,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-  
-
-
-
-
-  <meta name="description" content="头不知道你是否遇到过这个情况，项目上线后或者开始给别人使用的时候，冷不丁的冒出个Bug，这时候首先要干嘛？ 先看崩溃日志啊 看完崩溃日志你知道了造成崩溃的原因，然后干嘛？ 开始甩锅啊 当查明了是谁造成的这个崩溃后，你发现不是你的问题，于是你心中一乐，长舒一口气">
-<meta name="keywords" content="Android">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Bugly热修复使用及多渠道打包">
-<meta property="og:url" content="http://yoursite.com/2018/09/26/Bugly热修复使用及多渠道打包/index.html">
-<meta property="og:site_name" content="老晨子の博客">
-<meta property="og:description" content="头不知道你是否遇到过这个情况，项目上线后或者开始给别人使用的时候，冷不丁的冒出个Bug，这时候首先要干嘛？ 先看崩溃日志啊 看完崩溃日志你知道了造成崩溃的原因，然后干嘛？ 开始甩锅啊 当查明了是谁造成的这个崩溃后，你发现不是你的问题，于是你心中一乐，长舒一口气">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Bugly%E6%8E%A5%E5%85%A5%E6%B5%81%E7%A8%8B/bugly-001.png">
-<meta property="og:image" content="https://bugly.qq.com/docs/img/hotfix/android/Snip20170209_2.png?v=20180709165613">
-<meta property="og:image" content="https://bugly.qq.com/docs/img/hotfix/android/1479216059696.png?v=20180709165613">
-<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Bugly%E6%8E%A5%E5%85%A5%E6%B5%81%E7%A8%8B/bugly-002.png">
-<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Bugly%E6%8E%A5%E5%85%A5%E6%B5%81%E7%A8%8B/bugly-003.png">
-<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Bugly%E6%8E%A5%E5%85%A5%E6%B5%81%E7%A8%8B/bugly-004.png">
-<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Bugly%E6%8E%A5%E5%85%A5%E6%B5%81%E7%A8%8B/zaihui.png">
-<meta property="og:updated_time" content="2018-10-04T15:57:53.270Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Bugly热修复使用及多渠道打包">
-<meta name="twitter:description" content="头不知道你是否遇到过这个情况，项目上线后或者开始给别人使用的时候，冷不丁的冒出个Bug，这时候首先要干嘛？ 先看崩溃日志啊 看完崩溃日志你知道了造成崩溃的原因，然后干嘛？ 开始甩锅啊 当查明了是谁造成的这个崩溃后，你发现不是你的问题，于是你心中一乐，长舒一口气">
-<meta name="twitter:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Bugly%E6%8E%A5%E5%85%A5%E6%B5%81%E7%A8%8B/bugly-001.png">
-
-
-
-  <link rel="alternate" href="/atom.xml" title="老晨子の博客" type="application/atom+xml" />
-
-
-
-
-  <link rel="canonical" href="http://yoursite.com/2018/09/26/Bugly热修复使用及多渠道打包/"/>
-
-
-
-<script type="text/javascript" id="page.configurations">
-  CONFIG.page = {
-    sidebar: "",
-  };
-</script>
-
-  <title>Bugly热修复使用及多渠道打包 | 老晨子の博客</title>
-  
-
-
-
-
-
-
-
-
-
-  <noscript>
-  <style type="text/css">
-    .use-motion .motion-element,
-    .use-motion .brand,
-    .use-motion .menu-item,
-    .sidebar-inner,
-    .use-motion .post-block,
-    .use-motion .pagination,
-    .use-motion .comments,
-    .use-motion .post-header,
-    .use-motion .post-body,
-    .use-motion .collection-title { opacity: initial; }
-
-    .use-motion .logo,
-    .use-motion .site-title,
-    .use-motion .site-subtitle {
-      opacity: initial;
-      top: initial;
-    }
-
-    .use-motion {
-      .logo-line-before i { left: initial; }
-      .logo-line-after i { right: initial; }
-    }
-  </style>
-</noscript>
-
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="/img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="知惑顿断如碎石，思惑难断如藕丝">
+    <meta name="author" content="Old Chen">
+    <meta name="keywords" content="Android">
+    <title>Bugly热修复使用及多渠道打包 ~ 老晨子の博客</title>
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css?v=5.7.2">
+    <link rel="stylesheet" href="/lib/mdbootstrap/css/bootstrap.min.css?v=4.3.1">
+    <link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css?v=4.8.7">
+    <link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css">
+    <link rel="stylesheet" href="/lib/nprogress/nprogress.css?v=0.2.0">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+    
+        <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css">
+    
+    <link rel="stylesheet" href="/css/main.css">
+
+    
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
-  
-  
-    
-  
+<body>
+<header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+<div class="container">
+    <a class="navbar-brand" href="/">&nbsp;<strong>老晨子の博客</strong>&nbsp;</a>
 
-  <div class="container sidebar-position-left page-post-detail">
-    <div class="headband"></div>
-
-	<a href="https://github.com/asjqkkkk" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#fff; color:#151513; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
-    
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">老晨子の博客</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
-    </div>
-    
-      
-        <p class="site-subtitle">想写的时候写一些</p>
-      
-    
-  </div>
-
-  <div class="site-nav-toggle">
-    <button aria-label="切换导航栏">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <div class="animated-icon"><span></span><span></span><span></span></div>
     </button>
-  </div>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto text-center">
+            
+            <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" href="/archives/">Archives</a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" href="/categories/">Categories</a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" href="/tags/">Tags</a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" href="/about/">About</a>
+            </li>
+            
+            
+                <li class="nav-item" id="search-btn">
+                    <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+                </li>
+            
+        </ul>
+    </div>
 </div>
 
 
-
-<nav class="site-nav">
-  
-    <ul id="menu" class="menu">
-      
-        
-        
-        
-          
-          <li class="menu-item menu-item-home">
-    <a href="/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-archives">
-    <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
-  </li>
-
-      
-      
-    </ul>
-  
-
-  
-    
-
-  
-
-  
 </nav>
-
-
-
-  
-
-
-
-</div>
-    </header>
-
-    
-
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/26/Bugly热修复使用及多渠道打包/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Old Chen">
-      <meta itemprop="description" content="知惑顿断如碎石，思惑难断如藕丝">
-      <meta itemprop="image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1532883475752&di=918e8ad03b17db01c84cdca20dd0ecdb&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201204%2F28%2F20120428125420_iUrGK.thumb.700_0.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="老晨子の博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">Bugly热修复使用及多渠道打包
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-09-26 19:54:41" itemprop="dateCreated datePublished" datetime="2018-09-26T19:54:41+08:00">2018-09-26</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-10-04 23:57:53" itemprop="dateModified" datetime="2018-10-04T23:57:53+08:00">2018-10-04</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+    <div class="view intro-2"
+         style="background: url('/img/post.jpg')no-repeat center center;background-size: cover;">
+        <div class="full-bg-img">
+            <div class="mask rgba-black-light flex-center">
+                <div class="container text-center white-text wow fadeInUp">
+                    <span class="h2" id="subtitle">
+                        
+                    </span>
+                    
+                        <br>
+                        <p>Wednesday, September 26th 2018, 7:54 pm</p>
+                    
+                </div>
+            </div>
         </div>
-      </header>
-    
+    </div>
+</header>
 
+<main>
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
+        
 
-      
-      
-
-      
-        <h2 id="头"><a href="#头" class="headerlink" title="头"></a>头</h2><p>不知道你是否遇到过这个情况，项目上线后或者开始给别人使用的时候，冷不丁的冒出个Bug，这时候首先要干嘛？</p>
+<div class="container-fluid">
+    <div class="row">
+        <div class="d-none d-lg-block col-lg-2"></div>
+            <div class="col-lg-8 nopadding-md">
+                <div class="py-5 z-depth-3 board">
+                    <div class="post-content mx-auto">
+                        <div class="markdown-body">
+                            <h2 id="头"><a href="#头" class="headerlink" title="头"></a>头</h2><p>不知道你是否遇到过这个情况，项目上线后或者开始给别人使用的时候，冷不丁的冒出个Bug，这时候首先要干嘛？</p>
 <p><strong>先看崩溃日志啊</strong></p>
 <p>看完崩溃日志你知道了造成崩溃的原因，然后干嘛？</p>
 <p><strong>开始甩锅啊</strong></p>
@@ -413,14 +129,133 @@
 <p><a href="https://bugly.qq.com/docs/user-guide/instruction-manual-android-hotfix/?v=20180709165613" target="_blank" rel="noopener">【Bugly Android热更新使用指南】</a></p>
 <p>虽然官方有例子，这里还是写了一个简化版，也方便以后哪天自己忘记了依旧能快速使用：</p>
 <h4 id="第一步：添加依赖插件"><a href="#第一步：添加依赖插件" class="headerlink" title="第一步：添加依赖插件"></a>第一步：添加依赖插件</h4><p>在你的项目更目录下的“build.gradle”中添加：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        // tinkersupport插件, 其中lastest.release指拉取最新版本，也可以指定明确版本号，例如1.0.4</span><br><span class="line">        classpath &quot;com.tencent.bugly:tinker-support:1.1.2&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在写这篇文章的时候，最新的版本就是1.1.2</p>
+<pre><code>buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        // tinkersupport插件, 其中lastest.release指拉取最新版本，也可以指定明确版本号，例如1.0.4
+        classpath &quot;com.tencent.bugly:tinker-support:1.1.2&quot;
+    }
+}
+</code></pre><p>在写这篇文章的时候，最新的版本就是1.1.2</p>
 <h4 id="第二步：配置依赖插件"><a href="#第二步：配置依赖插件" class="headerlink" title="第二步：配置依赖插件"></a>第二步：配置依赖插件</h4><h5 id="gradle配置"><a href="#gradle配置" class="headerlink" title="gradle配置"></a>gradle配置</h5><p>在app module的“build.gradle”文件中添加（示例配置）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">// 依赖插件脚本</span><br><span class="line">apply from: &apos;tinker-support.gradle&apos;</span><br><span class="line"></span><br><span class="line">android &#123;</span><br><span class="line">        defaultConfig &#123;</span><br><span class="line">          ndk &#123;</span><br><span class="line">            //设置支持的SO库架构</span><br><span class="line">            abiFilters &apos;armeabi&apos; //, &apos;x86&apos;, &apos;armeabi-v7a&apos;, &apos;x86_64&apos;, &apos;arm64-v8a&apos;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      dependencies &#123;</span><br><span class="line">         implementation &apos;com.android.support:multidex:1.0.1&apos;</span><br><span class="line">        // 多dex配置</span><br><span class="line">        //注释掉原有bugly的仓库</span><br><span class="line">        //compile &apos;com.tencent.bugly:crashreport:latest.release&apos;//其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.3.4</span><br><span class="line">        implementation &apos;com.tencent.bugly:crashreport_upgrade:1.3.5&apos;</span><br><span class="line">        // 指定tinker依赖版本（注：应用升级1.3.5版本起，不再内置tinker）</span><br><span class="line">        implementation &apos;com.tencent.tinker:tinker-android-lib:1.9.6&apos;</span><br><span class="line">        implementation &apos;com.tencent.bugly:nativecrashreport:latest.release&apos;</span><br><span class="line">        //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.2.0</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
-<p>在这个版本的SDK里面，已经集成了崩溃日志上传的功能哦！</p>
+<pre><code>...
+// 依赖插件脚本
+apply from: &#39;tinker-support.gradle&#39;
+
+android {
+        defaultConfig {
+          ndk {
+            //设置支持的SO库架构
+            abiFilters &#39;armeabi&#39; //, &#39;x86&#39;, &#39;armeabi-v7a&#39;, &#39;x86_64&#39;, &#39;arm64-v8a&#39;
+          }
+        }
+      }
+      dependencies {
+         implementation &#39;com.android.support:multidex:1.0.1&#39;
+        // 多dex配置
+        //注释掉原有bugly的仓库
+        //compile &#39;com.tencent.bugly:crashreport:latest.release&#39;//其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.3.4
+        implementation &#39;com.tencent.bugly:crashreport_upgrade:1.3.5&#39;
+        // 指定tinker依赖版本（注：应用升级1.3.5版本起，不再内置tinker）
+        implementation &#39;com.tencent.tinker:tinker-android-lib:1.9.6&#39;
+        implementation &#39;com.tencent.bugly:nativecrashreport:latest.release&#39;
+        //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.2.0
+      }
+</code></pre><p>在这个版本的SDK里面，已经集成了崩溃日志上传的功能哦！</p>
 <h5 id="tinker-support-gradle的配置"><a href="#tinker-support-gradle的配置" class="headerlink" title="tinker-support.gradle的配置"></a>tinker-support.gradle的配置</h5><p>接下来，你要在app module目录下创建另外一个gradle文件，命名为“tinker-support.gradle”，然后对它进行配置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line">apply plugin: &apos;com.tencent.bugly.tinker-support&apos;</span><br><span class="line"></span><br><span class="line">def bakPath = file(&quot;$&#123;buildDir&#125;/bakApk/&quot;)</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 此处填写每次构建生成的基准包目录</span><br><span class="line"> */</span><br><span class="line">def baseApkDir = &quot;app-0921-14-52-06&quot;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 对于插件各参数的详细解析请参考</span><br><span class="line"> */</span><br><span class="line">tinkerSupport &#123;</span><br><span class="line"></span><br><span class="line">    // 开启tinker-support插件，默认值true</span><br><span class="line">    enable = true</span><br><span class="line"></span><br><span class="line">    // 指定归档目录，默认值当前module的子目录tinker</span><br><span class="line">    autoBackupApkDir = &quot;$&#123;bakPath&#125;&quot;</span><br><span class="line"></span><br><span class="line">    // 是否启用覆盖tinkerPatch配置功能，默认值false</span><br><span class="line">    // 开启后tinkerPatch配置不生效，即无需添加tinkerPatch</span><br><span class="line">    overrideTinkerPatchConfiguration = true</span><br><span class="line"></span><br><span class="line">    // 编译补丁包时，必需指定基线版本的apk，默认值为空</span><br><span class="line">    // 如果为空，则表示不是进行补丁包的编译</span><br><span class="line">    // @&#123;link tinkerPatch.oldApk &#125;</span><br><span class="line">    baseApk = &quot;$&#123;bakPath&#125;/$&#123;baseApkDir&#125;/app-release.apk&quot;</span><br><span class="line"></span><br><span class="line">    // 对应tinker插件applyMapping</span><br><span class="line">    baseApkProguardMapping = &quot;$&#123;bakPath&#125;/$&#123;baseApkDir&#125;/app-release-mapping.txt&quot;</span><br><span class="line"></span><br><span class="line">    // 对应tinker插件applyResourceMapping</span><br><span class="line">    baseApkResourceMapping = &quot;$&#123;bakPath&#125;/$&#123;baseApkDir&#125;/app-release-R.txt&quot;</span><br><span class="line"></span><br><span class="line">    // 构建基准包和补丁包都要指定不同的tinkerId，并且必须保证唯一性</span><br><span class="line">    tinkerId = &quot;1.0.1-patch&quot;                //tinkerId = &quot;1.0.1-patch&quot;            tinkerId = &quot;1.0.1-base&quot;</span><br><span class="line"></span><br><span class="line">    // 构建多渠道补丁时使用</span><br><span class="line">    // buildAllFlavorsDir = &quot;$&#123;bakPath&#125;/$&#123;baseApkDir&#125;&quot;</span><br><span class="line"></span><br><span class="line">    // 是否启用加固模式，默认为false.(tinker-spport 1.0.7起支持）</span><br><span class="line">    // isProtectedApp = true</span><br><span class="line"></span><br><span class="line">    // 是否开启反射Application模式</span><br><span class="line">    enableProxyApplication = false</span><br><span class="line"></span><br><span class="line">    // 是否支持新增非export的Activity（注意：设置为true才能修改AndroidManifest文件）</span><br><span class="line">    supportHotplugComponent = true</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 一般来说,我们无需对下面的参数做任何的修改</span><br><span class="line"> * 对于各参数的详细介绍请参考:</span><br><span class="line"> * https://github.com/Tencent/tinker/wiki/Tinker-%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97</span><br><span class="line"> */</span><br><span class="line">tinkerPatch &#123;</span><br><span class="line">    //oldApk =&quot;$&#123;bakPath&#125;/$&#123;appName&#125;/app-release.apk&quot;</span><br><span class="line">    ignoreWarning = false</span><br><span class="line">    useSign = true</span><br><span class="line">    dex &#123;</span><br><span class="line">        dexMode = &quot;jar&quot;</span><br><span class="line">        pattern = [&quot;classes*.dex&quot;]</span><br><span class="line">        loader = []</span><br><span class="line">    &#125;</span><br><span class="line">    lib &#123;</span><br><span class="line">        pattern = [&quot;lib/*/*.so&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    res &#123;</span><br><span class="line">        pattern = [&quot;res/*&quot;, &quot;r/*&quot;, &quot;assets/*&quot;, &quot;resources.arsc&quot;, &quot;AndroidManifest.xml&quot;]</span><br><span class="line">        ignoreChange = []</span><br><span class="line">        largeModSize = 100</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    packageConfig &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    sevenZip &#123;</span><br><span class="line">        zipArtifact = &quot;com.tencent.mm:SevenZip:1.1.10&quot;</span><br><span class="line">//        path = &quot;/usr/local/bin/7za&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    buildConfig &#123;</span><br><span class="line">        keepDexApply = false</span><br><span class="line">        //tinkerId = &quot;1.0.1-base&quot;</span><br><span class="line">        //applyMapping = &quot;$&#123;bakPath&#125;/$&#123;appName&#125;/app-release-mapping.txt&quot; //  可选，设置mapping文件，建议保持旧apk的proguard混淆方式</span><br><span class="line">        //applyResourceMapping = &quot;$&#123;bakPath&#125;/$&#123;appName&#125;/app-release-R.txt&quot; // 可选，设置R.txt文件，通过旧apk文件保持ResId的分配</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里面的配置比较多，一开始看还是有点儿眼花缭乱的，所以得慢慢来；</p>
+<pre><code>apply plugin: &#39;com.tencent.bugly.tinker-support&#39;
+
+def bakPath = file(&quot;${buildDir}/bakApk/&quot;)
+
+/**
+ * 此处填写每次构建生成的基准包目录
+ */
+def baseApkDir = &quot;app-0921-14-52-06&quot;
+
+/**
+ * 对于插件各参数的详细解析请参考
+ */
+tinkerSupport {
+
+    // 开启tinker-support插件，默认值true
+    enable = true
+
+    // 指定归档目录，默认值当前module的子目录tinker
+    autoBackupApkDir = &quot;${bakPath}&quot;
+
+    // 是否启用覆盖tinkerPatch配置功能，默认值false
+    // 开启后tinkerPatch配置不生效，即无需添加tinkerPatch
+    overrideTinkerPatchConfiguration = true
+
+    // 编译补丁包时，必需指定基线版本的apk，默认值为空
+    // 如果为空，则表示不是进行补丁包的编译
+    // @{link tinkerPatch.oldApk }
+    baseApk = &quot;${bakPath}/${baseApkDir}/app-release.apk&quot;
+
+    // 对应tinker插件applyMapping
+    baseApkProguardMapping = &quot;${bakPath}/${baseApkDir}/app-release-mapping.txt&quot;
+
+    // 对应tinker插件applyResourceMapping
+    baseApkResourceMapping = &quot;${bakPath}/${baseApkDir}/app-release-R.txt&quot;
+
+    // 构建基准包和补丁包都要指定不同的tinkerId，并且必须保证唯一性
+    tinkerId = &quot;1.0.1-patch&quot;                //tinkerId = &quot;1.0.1-patch&quot;            tinkerId = &quot;1.0.1-base&quot;
+
+    // 构建多渠道补丁时使用
+    // buildAllFlavorsDir = &quot;${bakPath}/${baseApkDir}&quot;
+
+    // 是否启用加固模式，默认为false.(tinker-spport 1.0.7起支持）
+    // isProtectedApp = true
+
+    // 是否开启反射Application模式
+    enableProxyApplication = false
+
+    // 是否支持新增非export的Activity（注意：设置为true才能修改AndroidManifest文件）
+    supportHotplugComponent = true
+
+}
+
+/**
+ * 一般来说,我们无需对下面的参数做任何的修改
+ * 对于各参数的详细介绍请参考:
+ * https://github.com/Tencent/tinker/wiki/Tinker-%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97
+ */
+tinkerPatch {
+    //oldApk =&quot;${bakPath}/${appName}/app-release.apk&quot;
+    ignoreWarning = false
+    useSign = true
+    dex {
+        dexMode = &quot;jar&quot;
+        pattern = [&quot;classes*.dex&quot;]
+        loader = []
+    }
+    lib {
+        pattern = [&quot;lib/*/*.so&quot;]
+    }
+
+    res {
+        pattern = [&quot;res/*&quot;, &quot;r/*&quot;, &quot;assets/*&quot;, &quot;resources.arsc&quot;, &quot;AndroidManifest.xml&quot;]
+        ignoreChange = []
+        largeModSize = 100
+    }
+
+    packageConfig {
+    }
+    sevenZip {
+        zipArtifact = &quot;com.tencent.mm:SevenZip:1.1.10&quot;
+//        path = &quot;/usr/local/bin/7za&quot;
+    }
+    buildConfig {
+        keepDexApply = false
+        //tinkerId = &quot;1.0.1-base&quot;
+        //applyMapping = &quot;${bakPath}/${appName}/app-release-mapping.txt&quot; //  可选，设置mapping文件，建议保持旧apk的proguard混淆方式
+        //applyResourceMapping = &quot;${bakPath}/${appName}/app-release-R.txt&quot; // 可选，设置R.txt文件，通过旧apk文件保持ResId的分配
+    }
+}
+
+</code></pre><p>这里面的配置比较多，一开始看还是有点儿眼花缭乱的，所以得慢慢来；</p>
 <p>这里对其中的几点进行说明：</p>
 <ul>
 <li><em>baseApkDir</em> ： 这里填写每次构建生成的基准包目录，每次打包的时候，都会有新的目录和新的基准包生成，但是只有你打算发布的那一个的目录才是有效的。</li>
@@ -428,23 +263,132 @@
 </ul>
 <p>更详细的配置项参考：<a href="https://bugly.qq.com/docs/utility-tools/plugin-gradle-hotfix/" target="_blank" rel="noopener">tinker-support配置说明</a></p>
 <h4 id="第三步：初始化SDK"><a href="#第三步：初始化SDK" class="headerlink" title="第三步：初始化SDK"></a>第三步：初始化SDK</h4><p>上面的“tinker-support.gradle”中的enableProxyApplication属性设置的是false，是Tinker推荐的接入方式。</p>
-<h5 id="自定义Application，当enableProxyApplication为false的情况"><a href="#自定义Application，当enableProxyApplication为false的情况" class="headerlink" title="自定义Application，当enableProxyApplication为false的情况"></a>自定义Application，当enableProxyApplication为false的情况</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public class SampleApplication extends TinkerApplication &#123;</span><br><span class="line">    public SampleApplication() &#123;</span><br><span class="line">        super(ShareConstants.TINKER_ENABLE_ALL, &quot;xxx.xxx.SampleApplicationLike&quot;,</span><br><span class="line">                &quot;com.tencent.tinker.loader.TinkerLoader&quot;, false);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>SampleApplicationLike</strong>需要是自定义的继承<strong>DefaultApplicationLike</strong>的类，不要忘了在<strong>AndroidManifest.xml</strong>中声名上面的这个Application哦。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">public class SampleApplicationLike extends DefaultApplicationLike &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public static final String TAG = &quot;Tinker.SampleApplicationLike&quot;;</span><br><span class="line"></span><br><span class="line">    public SampleApplicationLike(Application application, int tinkerFlags,</span><br><span class="line">                                 boolean tinkerLoadVerifyFlag, long applicationStartElapsedTime,</span><br><span class="line">                                 long applicationStartMillisTime, Intent tinkerResultIntent) &#123;</span><br><span class="line">        super(application, tinkerFlags, tinkerLoadVerifyFlag, applicationStartElapsedTime, applicationStartMillisTime, tinkerResultIntent);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onCreate() &#123;</span><br><span class="line">        super.onCreate();</span><br><span class="line">        // 这里实现SDK初始化，appId替换成你的在Bugly平台申请的appId</span><br><span class="line">        // 调试时，将第三个参数改为true</span><br><span class="line">        Bugly.init(getApplication(), &quot;900029763&quot;, false);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)</span><br><span class="line">    @Override</span><br><span class="line">    public void onBaseContextAttached(Context base) &#123;</span><br><span class="line">        super.onBaseContextAttached(base);</span><br><span class="line">        // you must install multiDex whatever tinker is installed!</span><br><span class="line">        MultiDex.install(base);</span><br><span class="line"></span><br><span class="line">        // 安装tinker</span><br><span class="line">        // TinkerManager.installTinker(this); 替换成下面Bugly提供的方法</span><br><span class="line">        Beta.installTinker(this);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)</span><br><span class="line">    public void registerActivityLifecycleCallback(Application.ActivityLifecycleCallbacks callbacks) &#123;</span><br><span class="line">        getApplication().registerActivityLifecycleCallbacks(callbacks);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上面需要注意的是在“onCreate()”方法中进行初始化的时候，填入的appId是你在Bugly创建的项目的Appid，其他地方基本上不用改了</p>
+<h5 id="自定义Application，当enableProxyApplication为false的情况"><a href="#自定义Application，当enableProxyApplication为false的情况" class="headerlink" title="自定义Application，当enableProxyApplication为false的情况"></a>自定义Application，当enableProxyApplication为false的情况</h5><pre><code>public class SampleApplication extends TinkerApplication {
+    public SampleApplication() {
+        super(ShareConstants.TINKER_ENABLE_ALL, &quot;xxx.xxx.SampleApplicationLike&quot;,
+                &quot;com.tencent.tinker.loader.TinkerLoader&quot;, false);
+    }
+}
+</code></pre><p><strong>SampleApplicationLike</strong>需要是自定义的继承<strong>DefaultApplicationLike</strong>的类，不要忘了在<strong>AndroidManifest.xml</strong>中声名上面的这个Application哦。</p>
+<pre><code>public class SampleApplicationLike extends DefaultApplicationLike {
+
+
+    public static final String TAG = &quot;Tinker.SampleApplicationLike&quot;;
+
+    public SampleApplicationLike(Application application, int tinkerFlags,
+                                 boolean tinkerLoadVerifyFlag, long applicationStartElapsedTime,
+                                 long applicationStartMillisTime, Intent tinkerResultIntent) {
+        super(application, tinkerFlags, tinkerLoadVerifyFlag, applicationStartElapsedTime, applicationStartMillisTime, tinkerResultIntent);
+    }
+
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        // 这里实现SDK初始化，appId替换成你的在Bugly平台申请的appId
+        // 调试时，将第三个参数改为true
+        Bugly.init(getApplication(), &quot;900029763&quot;, false);
+    }
+
+
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    @Override
+    public void onBaseContextAttached(Context base) {
+        super.onBaseContextAttached(base);
+        // you must install multiDex whatever tinker is installed!
+        MultiDex.install(base);
+
+        // 安装tinker
+        // TinkerManager.installTinker(this); 替换成下面Bugly提供的方法
+        Beta.installTinker(this);
+    }
+
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    public void registerActivityLifecycleCallback(Application.ActivityLifecycleCallbacks callbacks) {
+        getApplication().registerActivityLifecycleCallbacks(callbacks);
+    }
+}
+</code></pre><p>上面需要注意的是在“onCreate()”方法中进行初始化的时候，填入的appId是你在Bugly创建的项目的Appid，其他地方基本上不用改了</p>
 <h5 id="自定义Application，当enableProxyApplication为true的情况"><a href="#自定义Application，当enableProxyApplication为true的情况" class="headerlink" title="自定义Application，当enableProxyApplication为true的情况"></a>自定义Application，当enableProxyApplication为true的情况</h5><p>这种的接入方式要简单许多，无须你改造Application</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">public class MyApplication extends Application &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onCreate() &#123;</span><br><span class="line">        super.onCreate();</span><br><span class="line">        // 这里实现SDK初始化，appId替换成你的在Bugly平台申请的appId</span><br><span class="line">        // 调试时，将第三个参数改为true</span><br><span class="line">        Bugly.init(this, &quot;900029763&quot;, false);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void attachBaseContext(Context base) &#123;</span><br><span class="line">        super.attachBaseContext(base);</span><br><span class="line">        // you must install multiDex whatever tinker is installed!</span><br><span class="line">        MultiDex.install(base);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        // 安装tinker</span><br><span class="line">        Beta.installTinker();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="第四步：AndroidManifest-xml配置"><a href="#第四步：AndroidManifest-xml配置" class="headerlink" title="第四步：AndroidManifest.xml配置"></a>第四步：AndroidManifest.xml配置</h4><h5 id="1-权限配置："><a href="#1-权限配置：" class="headerlink" title="1.权限配置："></a>1.权限配置：</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;uses-permission android:name=&quot;android.permission.READ_PHONE_STATE&quot; /&gt;</span><br><span class="line">&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot; /&gt;</span><br><span class="line">&lt;uses-permission android:name=&quot;android.permission.ACCESS_NETWORK_STATE&quot; /&gt;</span><br><span class="line">&lt;uses-permission android:name=&quot;android.permission.ACCESS_WIFI_STATE&quot; /&gt;</span><br><span class="line">&lt;uses-permission android:name=&quot;android.permission.READ_LOGS&quot; /&gt;</span><br><span class="line">&lt;uses-permission android:name=&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot; /&gt;</span><br></pre></td></tr></table></figure>
-<h5 id="2-Activity配置："><a href="#2-Activity配置：" class="headerlink" title="2.Activity配置："></a>2.Activity配置：</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;activity</span><br><span class="line">    android:name=&quot;com.tencent.bugly.beta.ui.BetaActivity&quot;</span><br><span class="line">    android:configChanges=&quot;keyboardHidden|orientation|screenSize|locale&quot;</span><br><span class="line">    android:theme=&quot;@android:style/Theme.Translucent&quot; /&gt;</span><br></pre></td></tr></table></figure>
-<h5 id="3-配置FileProvider"><a href="#3-配置FileProvider" class="headerlink" title="3.配置FileProvider"></a>3.配置FileProvider</h5><pre><code>注意：如果您想兼容Android N或者以上的设备，必须要在AndroidManifest.xml文件中配置FileProvider来访问共享路径的文件。
-</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--热更新需要的Provider--&gt;</span><br><span class="line">&lt;provider</span><br><span class="line">    android:name=&quot;android.support.v4.content.FileProvider&quot;</span><br><span class="line">    android:authorities=&quot;$&#123;applicationId&#125;.fileProvider&quot;</span><br><span class="line">    android:exported=&quot;false&quot;</span><br><span class="line">    android:grantUriPermissions=&quot;true&quot;&gt;</span><br><span class="line">    &lt;meta-data</span><br><span class="line">        android:name=&quot;android.support.FILE_PROVIDER_PATHS&quot;</span><br><span class="line">        android:resource=&quot;@xml/provider_paths&quot;/&gt;</span><br><span class="line">&lt;/provider&gt;</span><br></pre></td></tr></table></figure>
-<p>在res目录新建xml文件夹，创建provider_paths.xml文件如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;paths xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;</span><br><span class="line">    &lt;!-- /storage/emulated/0/Download/$&#123;applicationId&#125;/.beta/apk--&gt;</span><br><span class="line">    &lt;external-path name=&quot;beta_external_path&quot; path=&quot;Download/&quot;/&gt;</span><br><span class="line">    &lt;!--/storage/emulated/0/Android/data/$&#123;applicationId&#125;/files/apk/--&gt;</span><br><span class="line">    &lt;external-path name=&quot;beta_external_files_path&quot; path=&quot;Android/data/&quot;/&gt;</span><br><span class="line">&lt;/paths&gt;</span><br></pre></td></tr></table></figure></p>
-<h4 id="第五步：混淆配置"><a href="#第五步：混淆配置" class="headerlink" title="第五步：混淆配置"></a>第五步：混淆配置</h4><p>为了避免混淆SDK，在Proguard混淆文件中增加以下配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-dontwarn com.tencent.bugly.**</span><br><span class="line">-keep public class com.tencent.bugly.**&#123;*;&#125;</span><br><span class="line"># tinker混淆规则</span><br><span class="line">-dontwarn com.tencent.tinker.**</span><br><span class="line">-keep class com.tencent.tinker.** &#123; *; &#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="三、打包"><a href="#三、打包" class="headerlink" title="三、打包"></a>三、打包</h3><p>当上面的环境配置都没有问题之后，就可以进行打包了。</p>
+<pre><code>public class MyApplication extends Application {
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        // 这里实现SDK初始化，appId替换成你的在Bugly平台申请的appId
+        // 调试时，将第三个参数改为true
+        Bugly.init(this, &quot;900029763&quot;, false);
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        // you must install multiDex whatever tinker is installed!
+        MultiDex.install(base);
+
+
+        // 安装tinker
+        Beta.installTinker();
+    }
+
+}
+</code></pre><h4 id="第四步：AndroidManifest-xml配置"><a href="#第四步：AndroidManifest-xml配置" class="headerlink" title="第四步：AndroidManifest.xml配置"></a>第四步：AndroidManifest.xml配置</h4><h5 id="1-权限配置："><a href="#1-权限配置：" class="headerlink" title="1.权限配置："></a>1.权限配置：</h5><pre><code>&lt;uses-permission android:name=&quot;android.permission.READ_PHONE_STATE&quot; /&gt;
+&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot; /&gt;
+&lt;uses-permission android:name=&quot;android.permission.ACCESS_NETWORK_STATE&quot; /&gt;
+&lt;uses-permission android:name=&quot;android.permission.ACCESS_WIFI_STATE&quot; /&gt;
+&lt;uses-permission android:name=&quot;android.permission.READ_LOGS&quot; /&gt;
+&lt;uses-permission android:name=&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot; /&gt;
+</code></pre><h5 id="2-Activity配置："><a href="#2-Activity配置：" class="headerlink" title="2.Activity配置："></a>2.Activity配置：</h5><pre><code>&lt;activity
+    android:name=&quot;com.tencent.bugly.beta.ui.BetaActivity&quot;
+    android:configChanges=&quot;keyboardHidden|orientation|screenSize|locale&quot;
+    android:theme=&quot;@android:style/Theme.Translucent&quot; /&gt;
+</code></pre><h5 id="3-配置FileProvider"><a href="#3-配置FileProvider" class="headerlink" title="3.配置FileProvider"></a>3.配置FileProvider</h5><pre><code>注意：如果您想兼容Android N或者以上的设备，必须要在AndroidManifest.xml文件中配置FileProvider来访问共享路径的文件。
+</code></pre><pre><code>        &lt;!--热更新需要的Provider--&gt;
+        &lt;provider
+            android:name=&quot;android.support.v4.content.FileProvider&quot;
+            android:authorities=&quot;${applicationId}.fileProvider&quot;
+            android:exported=&quot;false&quot;
+            android:grantUriPermissions=&quot;true&quot;&gt;
+            &lt;meta-data
+                android:name=&quot;android.support.FILE_PROVIDER_PATHS&quot;
+                android:resource=&quot;@xml/provider_paths&quot;/&gt;
+        &lt;/provider&gt;
+</code></pre><p>在res目录新建xml文件夹，创建provider_paths.xml文件如下：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;paths xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;
+    &lt;!-- /storage/emulated/0/Download/${applicationId}/.beta/apk--&gt;
+    &lt;external-path name=&quot;beta_external_path&quot; path=&quot;Download/&quot;/&gt;
+    &lt;!--/storage/emulated/0/Android/data/${applicationId}/files/apk/--&gt;
+    &lt;external-path name=&quot;beta_external_files_path&quot; path=&quot;Android/data/&quot;/&gt;
+&lt;/paths&gt;
+</code></pre><h4 id="第五步：混淆配置"><a href="#第五步：混淆配置" class="headerlink" title="第五步：混淆配置"></a>第五步：混淆配置</h4><p>为了避免混淆SDK，在Proguard混淆文件中增加以下配置：</p>
+<pre><code>-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
+# tinker混淆规则
+-dontwarn com.tencent.tinker.**
+-keep class com.tencent.tinker.** { *; }
+</code></pre><h3 id="三、打包"><a href="#三、打包" class="headerlink" title="三、打包"></a>三、打包</h3><p>当上面的环境配置都没有问题之后，就可以进行打包了。</p>
 <p>打包之前，你还得配置一下编译正式版apk所需要的<strong>keystore.jks</strong>文件，这个文件怎么创建的就不介绍了，这里主要介绍一下如何配置：</p>
 <p>在app moudle目录下的“build.gradle”中配置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">    signingConfigs &#123;</span><br><span class="line">        release &#123;</span><br><span class="line">            keyAlias &apos;xxxxxxxx&apos;</span><br><span class="line">            keyPassword &apos;xxxxxxxx&apos;</span><br><span class="line">            storeFile file(&apos;../keystore.jks&apos;)</span><br><span class="line">            storePassword &apos;xxxxxxxx&apos;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">    buildTypes &#123;</span><br><span class="line">        release &#123;</span><br><span class="line">            minifyEnabled true</span><br><span class="line">            proguardFiles getDefaultProguardFile(&apos;proguard-android.txt&apos;), &apos;proguard-rules.pro&apos;</span><br><span class="line">            signingConfig signingConfigs.release</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>其中的各项参数就不必做说明了</p>
+<pre><code>android {
+    signingConfigs {
+        release {
+            keyAlias &#39;xxxxxxxx&#39;
+            keyPassword &#39;xxxxxxxx&#39;
+            storeFile file(&#39;../keystore.jks&#39;)
+            storePassword &#39;xxxxxxxx&#39;
+        }
+    }
+    ...
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile(&#39;proguard-android.txt&#39;), &#39;proguard-rules.pro&#39;
+            signingConfig signingConfigs.release
+        }
+    }
+}
+</code></pre><p>其中的各项参数就不必做说明了</p>
 <p>然后就是打包过程<img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Bugly%E6%8E%A5%E5%85%A5%E6%B5%81%E7%A8%8B/bugly-001.png" alt="image"></p>
 <p><strong>打包过程中需要注意之前提到过的tinkerId的配置，以及目录的配置，很重要哦！</strong></p>
 <p>生成的基准包会在这个目录</p>
@@ -462,15 +406,41 @@
 <p><a href="https://github.com/Meituan-Dianping/walle" target="_blank" rel="noopener">Walle（瓦力）：Android Signature V2 Scheme签名下的新一代渠道包打包神器</a></p>
 <p>它的接入文档写的也十分友好，接下来实际操作一遍：</p>
 <h4 id="Walle的Gradle接入"><a href="#Walle的Gradle接入" class="headerlink" title="Walle的Gradle接入"></a>Walle的Gradle接入</h4><p>在项目根目录的 <strong>build.gradle</strong> 中添加依赖：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        classpath &apos;com.meituan.android.walle:plugin:1.1.6&apos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>然后在app module中的 <strong>build.gradle</strong> 添加：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">apply plugin: &apos;walle&apos;</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">    compile &apos;com.meituan.android.walle:library:1.1.6&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>并进行插件配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">walle &#123;</span><br><span class="line">    // 指定渠道包的输出路径</span><br><span class="line">    apkOutputFolder = new File(&quot;$&#123;project.buildDir&#125;/outputs/channels&quot;);</span><br><span class="line">    // 定制渠道包的APK的文件名称</span><br><span class="line">    apkFileNameFormat = &apos;$&#123;appName&#125;-$&#123;packageName&#125;-$&#123;channel&#125;-$&#123;buildType&#125;-v$&#123;versionName&#125;-$&#123;versionCode&#125;-$&#123;buildTime&#125;.apk&apos;;</span><br><span class="line">    // 渠道配置文件</span><br><span class="line">    channelFile = new File(&quot;$&#123;project.getProjectDir()&#125;/channel&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>接着在app module目录下创建一个文件，和上面配置中要保持一致，就叫 <strong>channel</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">360</span><br><span class="line">yingyongbao</span><br><span class="line">baidu</span><br><span class="line">wandoujia</span><br><span class="line">xiaomi</span><br><span class="line">oppo</span><br><span class="line">lenovo</span><br><span class="line">huawei</span><br><span class="line">default_channel</span><br><span class="line"># 打包命令 gradlew clean assembleReleaseChannels  或者 gradlew assembleReleaseChannels</span><br></pre></td></tr></table></figure></p>
-<p>最后，在你的Application中的<strong>onCreate</strong>方法里添加：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String channel = WalleChannelReader.getChannel(getApplication());</span><br><span class="line">Bugly.setAppChannel(getApplication(), channel);</span><br></pre></td></tr></table></figure>
-<p>如果你实现的是<strong>SampleApplicationLike</strong>，也是在它的<strong>onCreate</strong>方法里添加即可。</p>
+<pre><code>buildscript {
+    dependencies {
+        classpath &#39;com.meituan.android.walle:plugin:1.1.6&#39;
+    }
+}
+</code></pre><p>然后在app module中的 <strong>build.gradle</strong> 添加：</p>
+<pre><code>apply plugin: &#39;walle&#39;
+
+dependencies {
+    compile &#39;com.meituan.android.walle:library:1.1.6&#39;
+}
+</code></pre><p>并进行插件配置</p>
+<pre><code>walle {
+    // 指定渠道包的输出路径
+    apkOutputFolder = new File(&quot;${project.buildDir}/outputs/channels&quot;);
+    // 定制渠道包的APK的文件名称
+    apkFileNameFormat = &#39;${appName}-${packageName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}.apk&#39;;
+    // 渠道配置文件
+    channelFile = new File(&quot;${project.getProjectDir()}/channel&quot;)
+}
+</code></pre><p>接着在app module目录下创建一个文件，和上面配置中要保持一致，就叫 <strong>channel</strong></p>
+<pre><code>360
+yingyongbao
+baidu
+wandoujia
+xiaomi
+oppo
+lenovo
+huawei
+default_channel
+# 打包命令 gradlew clean assembleReleaseChannels  或者 gradlew assembleReleaseChannels
+</code></pre><p>最后，在你的Application中的<strong>onCreate</strong>方法里添加：</p>
+<pre><code>        String channel = WalleChannelReader.getChannel(getApplication());
+        Bugly.setAppChannel(getApplication(), channel);
+</code></pre><p>如果你实现的是<strong>SampleApplicationLike</strong>，也是在它的<strong>onCreate</strong>方法里添加即可。</p>
 <p>接下来通过运行上面的打包命令或者通过图中的手动操作，都是可以打包的</p>
 <p><img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Bugly%E6%8E%A5%E5%85%A5%E6%B5%81%E7%A8%8B/bugly-004.png" alt="image"></p>
 <h2 id="末"><a href="#末" class="headerlink" title="末"></a>末</h2><p>至此，基本上整个配置流程就到此结束!!!</p>
@@ -478,376 +448,141 @@
 <p><em>那么</em></p>
 <p><img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Bugly%E6%8E%A5%E5%85%A5%E6%B5%81%E7%A8%8B/zaihui.png" alt="image"></p>
 
-      
-    </div>
-
-    
-
-    
-    
-    
-
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2018/08/14/Android开发者编写自己的API接口（下）/" rel="next" title="Android开发者编写自己的API接口（下）">
-                <i class="fa fa-chevron-left"></i> Android开发者编写自己的API接口（下）
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/09/30/Kotlin笔记-一-基础篇/" rel="prev" title="Kotlin笔记(一):基础篇">
-                Kotlin笔记(一):基础篇 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-  </div>
-
-
-          </div>
-          
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <img class="site-author-image" itemprop="image"
-                src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1532883475752&di=918e8ad03b17db01c84cdca20dd0ecdb&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201204%2F28%2F20120428125420_iUrGK.thumb.700_0.jpeg"
-                alt="Old Chen" />
-            
-              <p class="site-author-name" itemprop="name">Old Chen</p>
-              <p class="site-description motion-element" itemprop="description">知惑顿断如碎石，思惑难断如藕丝</p>
-          </div>
-
-          
-            <nav class="site-state motion-element">
-              
-                <div class="site-state-item site-state-posts">
-                
-                  <a href="/archives/">
-                
-                    <span class="site-state-item-count">18</span>
-                    <span class="site-state-item-name">日志</span>
-                  </a>
+                            <hr>
+                        </div>
+                        <br>
+                        <div>
+                            
+                            <p>
+                                <i class="iconfont icon-tag"></i>
+                                
+                            </p>
+                            
+                                <p class="note note-warning">�������������³��ر������⣬������ <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener">CC BY-SA 3.0Э��</a> ��ת����ע��������</p>
+                            
+                        </div>
+                    </div>
                 </div>
-              
-
-              
-
-              
-            </nav>
-          
-
-          
-            <div class="feed-link motion-element">
-              <a href="/atom.xml" rel="alternate">
-                <i class="fa fa-rss"></i>
-                RSS
-              </a>
             </div>
-          
-
-          
-            <div class="links-of-author motion-element">
-              
-                <span class="links-of-author-item">
-                  <a href="https://github.com/asjqkkkk" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
-                  
-                </span>
-              
-                <span class="links-of-author-item">
-                  <a href="https://blog.csdn.net/asjqkkkk" target="_blank" title="csdn"><i class="fa fa-fw fa-rss-square"></i>csdn</a>
-                  
-                </span>
-              
-            </div>
-          
-
-          
-          
-
-          
-          
-
-          
+        <div class="d-none d-lg-block col-lg-2 toc-container">
             
-          
-          
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i> Toc:</p> 
+    <div id="tocbot"></div>
+  </div>
 
         </div>
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#头"><span class="nav-number">1.</span> <span class="nav-text">头</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#身"><span class="nav-number">2.</span> <span class="nav-text">身</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、为什么要用Bugly"><span class="nav-number">2.1.</span> <span class="nav-text">一、为什么要用Bugly</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、Bugly热更新接入流程"><span class="nav-number">2.2.</span> <span class="nav-text">二、Bugly热更新接入流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一步：添加依赖插件"><span class="nav-number">2.2.1.</span> <span class="nav-text">第一步：添加依赖插件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二步：配置依赖插件"><span class="nav-number">2.2.2.</span> <span class="nav-text">第二步：配置依赖插件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#gradle配置"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">gradle配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#tinker-support-gradle的配置"><span class="nav-number">2.2.2.2.</span> <span class="nav-text">tinker-support.gradle的配置</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三步：初始化SDK"><span class="nav-number">2.2.3.</span> <span class="nav-text">第三步：初始化SDK</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#自定义Application，当enableProxyApplication为false的情况"><span class="nav-number">2.2.3.1.</span> <span class="nav-text">自定义Application，当enableProxyApplication为false的情况</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#自定义Application，当enableProxyApplication为true的情况"><span class="nav-number">2.2.3.2.</span> <span class="nav-text">自定义Application，当enableProxyApplication为true的情况</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第四步：AndroidManifest-xml配置"><span class="nav-number">2.2.4.</span> <span class="nav-text">第四步：AndroidManifest.xml配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-权限配置："><span class="nav-number">2.2.4.1.</span> <span class="nav-text">1.权限配置：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-Activity配置："><span class="nav-number">2.2.4.2.</span> <span class="nav-text">2.Activity配置：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-配置FileProvider"><span class="nav-number">2.2.4.3.</span> <span class="nav-text">3.配置FileProvider</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第五步：混淆配置"><span class="nav-number">2.2.5.</span> <span class="nav-text">第五步：混淆配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、打包"><span class="nav-number">2.3.</span> <span class="nav-text">三、打包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、使用"><span class="nav-number">2.4.</span> <span class="nav-text">四、使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#尾"><span class="nav-number">3.</span> <span class="nav-text">尾</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Walle进行多渠道打包"><span class="nav-number">3.1.</span> <span class="nav-text">使用Walle进行多渠道打包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Walle的Gradle接入"><span class="nav-number">3.1.1.</span> <span class="nav-text">Walle的Gradle接入</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#末"><span class="nav-number">4.</span> <span class="nav-text">末</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
-
     </div>
-  </aside>
+</div>
+
+<!-- custom -->
 
 
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+    <div class="container comments mx-auto" id="comments">
         
+    </div>
+</div>
+
+    
+</main>
+
+
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">oldchen</span>
-
-  
-
-  
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="None" data-success="success" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
 </div>
 
 
-
-
-   <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div> 
-
-
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Mist</a> v6.3.0</div>
-
-
-
-
-        
-
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-	
-    
-
+<footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/0x2e/Material-T" target="_blank" rel="nofollow noopener"> <b>Material-T</b></a>
+    <br>
     
   </div>
+</footer>
 
+  <!-- SCRIPTS -->
+  <script src="/lib/mdbootstrap/js/jquery-3.4.1.min.js"></script>
+  <script src="/lib/mdbootstrap/js/popper.min.js"></script>
+  <script src="/lib/mdbootstrap/js/bootstrap.min.js?v=4.3.1"></script>
+  <script src="/lib/mdbootstrap/js/mdb.min.js?v=4.8.7"></script>
+  <script src="/lib/nprogress/nprogress.min.js?v=0.2.0"></script>
+  <script src="/js/main.js"></script>
   
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
+      <script src="/lib/tocbot/tocbot.min.js?v=4.7.0"></script>
+    
+    <script src="/js/post.js"></script>
   
   
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
-
+    <script src="/lib/prettify/prettify.min.js?v=0.1.0"></script>
+    <script>
+      $(document).ready(function(){
+        $('pre').addClass('prettyprint linenums');
+        prettyPrint();
+      })
+    </script>
   
   
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+    <script src="/lib/typed/typed.min.js?v=2.0.9"></script>
+    <script>
+        var typed = new Typed('#subtitle', {
+          strings: [
+            '  ',
+            "Bugly热修复使用及多渠道打包&nbsp;",
+        ],
+        cursorChar: "_",
+        typeSpeed: 70,
+        startDelay: 300, //开始之前延迟300毫秒
+        loop: false,
+        });
+        $(".typed-cursor").addClass("h2");
+    </script>
   
-
-
   
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
-
-
-
-  
+    <script src="/lib/anchor/anchor.min.js?v=4.2.0"></script>
+    <script>
+      anchors.options = {
+        placement: "right",
+        visible: "false",
+        
+      };
+      var el = "h1,h2,h3,h4,h5,h6".split(",")
+      var res = []
+      for (item of el) {
+        res.push(".markdown-body > " + item)
+      }
+      anchors.add(res.join(", "))
+    </script>
   
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
-
-
-
+    <script src="/js/local-search.js"></script>
+    <script>
+      var path = "/local-search.xml";
+      var inputArea = document.querySelector("#local-search-input");
+      inputArea.onclick = function(){ getSearchFile(path); this.onclick = null }
+    </script>
   
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
-
-
-
-  
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
 <script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":75,"height":150},"mobile":{"show":true},"log":false});</script></body>
 </html>

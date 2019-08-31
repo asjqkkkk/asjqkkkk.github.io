@@ -1,380 +1,111 @@
 <!DOCTYPE html>
+<html lang="zh-CN">
 
 
 
 
 
-
-
-
-
-
-
-
-  
-
-
-<html class="theme-next mist use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
-<meta name="theme-color" content="#222">
-
-
-
-
-
-
-
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
-
-
-
-
-
-
-
-
-
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Mist',
-    version: '6.3.0',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: false,
-    fastclick: false,
-    lazyload: false,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-  
-
-
-
-
-  <meta name="description" content="开头图文混排在移动端的实现方案主要有两大种，比如通过HTML去做一个WebView的富文本，或者通过原生的方式去实现。 使用WebView在性能上自然不及原生实现，同时开发者需要具备一定的前端知识，它最大的优势是跨平台; 出于性能的考虑，以及我对前端知识的了解程度，这里我只是介绍一下如何通过原生的方式去实现图文混排。">
-<meta name="keywords" content="Android">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Flutter图文混排原生实现方案">
-<meta property="og:url" content="http://yoursite.com/2019/04/19/Flutter图文混排原生实现方案/index.html">
-<meta property="og:site_name" content="老晨子の博客">
-<meta property="og:description" content="开头图文混排在移动端的实现方案主要有两大种，比如通过HTML去做一个WebView的富文本，或者通过原生的方式去实现。 使用WebView在性能上自然不及原生实现，同时开发者需要具备一定的前端知识，它最大的优势是跨平台; 出于性能的考虑，以及我对前端知识的了解程度，这里我只是介绍一下如何通过原生的方式去实现图文混排。">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Flutter%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92%E5%8E%9F%E7%94%9F%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88/001.png">
-<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Flutter%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92%E5%8E%9F%E7%94%9F%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88/002.png">
-<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Flutter%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92%E5%8E%9F%E7%94%9F%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88/003.gif">
-<meta property="og:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/apk/apk.png">
-<meta property="og:updated_time" content="2019-04-19T03:20:32.096Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Flutter图文混排原生实现方案">
-<meta name="twitter:description" content="开头图文混排在移动端的实现方案主要有两大种，比如通过HTML去做一个WebView的富文本，或者通过原生的方式去实现。 使用WebView在性能上自然不及原生实现，同时开发者需要具备一定的前端知识，它最大的优势是跨平台; 出于性能的考虑，以及我对前端知识的了解程度，这里我只是介绍一下如何通过原生的方式去实现图文混排。">
-<meta name="twitter:image" content="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/Flutter%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92%E5%8E%9F%E7%94%9F%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88/001.png">
-
-
-
-  <link rel="alternate" href="/atom.xml" title="老晨子の博客" type="application/atom+xml" />
-
-
-
-
-  <link rel="canonical" href="http://yoursite.com/2019/04/19/Flutter图文混排原生实现方案/"/>
-
-
-
-<script type="text/javascript" id="page.configurations">
-  CONFIG.page = {
-    sidebar: "",
-  };
-</script>
-
-  <title>Flutter图文混排原生实现方案 | 老晨子の博客</title>
-  
-
-
-
-
-
-
-
-
-
-  <noscript>
-  <style type="text/css">
-    .use-motion .motion-element,
-    .use-motion .brand,
-    .use-motion .menu-item,
-    .sidebar-inner,
-    .use-motion .post-block,
-    .use-motion .pagination,
-    .use-motion .comments,
-    .use-motion .post-header,
-    .use-motion .post-body,
-    .use-motion .collection-title { opacity: initial; }
-
-    .use-motion .logo,
-    .use-motion .site-title,
-    .use-motion .site-subtitle {
-      opacity: initial;
-      top: initial;
-    }
-
-    .use-motion {
-      .logo-line-before i { left: initial; }
-      .logo-line-after i { right: initial; }
-    }
-  </style>
-</noscript>
-
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="/img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="知惑顿断如碎石，思惑难断如藕丝">
+    <meta name="author" content="Old Chen">
+    <meta name="keywords" content="Android">
+    <title>Flutter图文混排原生实现方案 ~ 老晨子の博客</title>
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css?v=5.7.2">
+    <link rel="stylesheet" href="/lib/mdbootstrap/css/bootstrap.min.css?v=4.3.1">
+    <link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css?v=4.8.7">
+    <link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css">
+    <link rel="stylesheet" href="/lib/nprogress/nprogress.css?v=0.2.0">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+    
+        <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css">
+    
+    <link rel="stylesheet" href="/css/main.css">
+
+    
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
-  
-  
-    
-  
+<body>
+<header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+<div class="container">
+    <a class="navbar-brand" href="/">&nbsp;<strong>老晨子の博客</strong>&nbsp;</a>
 
-  <div class="container sidebar-position-left page-post-detail">
-    <div class="headband"></div>
-
-	<a href="https://github.com/asjqkkkk" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#fff; color:#151513; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
-    
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">老晨子の博客</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
-    </div>
-    
-      
-        <p class="site-subtitle">想写的时候写一些</p>
-      
-    
-  </div>
-
-  <div class="site-nav-toggle">
-    <button aria-label="切换导航栏">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <div class="animated-icon"><span></span><span></span><span></span></div>
     </button>
-  </div>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto text-center">
+            
+            <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" href="/archives/">Archives</a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" href="/categories/">Categories</a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" href="/tags/">Tags</a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" href="/about/">About</a>
+            </li>
+            
+            
+                <li class="nav-item" id="search-btn">
+                    <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+                </li>
+            
+        </ul>
+    </div>
 </div>
 
 
-
-<nav class="site-nav">
-  
-    <ul id="menu" class="menu">
-      
-        
-        
-        
-          
-          <li class="menu-item menu-item-home">
-    <a href="/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-archives">
-    <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
-  </li>
-
-      
-      
-    </ul>
-  
-
-  
-    
-
-  
-
-  
 </nav>
-
-
-
-  
-
-
-
-</div>
-    </header>
-
-    
-
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/19/Flutter图文混排原生实现方案/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Old Chen">
-      <meta itemprop="description" content="知惑顿断如碎石，思惑难断如藕丝">
-      <meta itemprop="image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1532883475752&di=918e8ad03b17db01c84cdca20dd0ecdb&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201204%2F28%2F20120428125420_iUrGK.thumb.700_0.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="老晨子の博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">Flutter图文混排原生实现方案
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-04-19 11:19:50 / 修改时间：11:20:32" itemprop="dateCreated datePublished" datetime="2019-04-19T11:19:50+08:00">2019-04-19</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+    <div class="view intro-2"
+         style="background: url('/img/post.jpg')no-repeat center center;background-size: cover;">
+        <div class="full-bg-img">
+            <div class="mask rgba-black-light flex-center">
+                <div class="container text-center white-text wow fadeInUp">
+                    <span class="h2" id="subtitle">
+                        
+                    </span>
+                    
+                        <br>
+                        <p>Friday, April 19th 2019, 11:19 am</p>
+                    
+                </div>
+            </div>
         </div>
-      </header>
-    
+    </div>
+</header>
 
+<main>
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
+        
 
-      
-      
-
-      
-        <h1 id="开头"><a href="#开头" class="headerlink" title="开头"></a>开头</h1><p>图文混排在移动端的实现方案主要有两大种，比如通过HTML去做一个WebView的富文本，或者通过原生的方式去实现。</p>
+<div class="container-fluid">
+    <div class="row">
+        <div class="d-none d-lg-block col-lg-2"></div>
+            <div class="col-lg-8 nopadding-md">
+                <div class="py-5 z-depth-3 board">
+                    <div class="post-content mx-auto">
+                        <div class="markdown-body">
+                            <h1 id="开头"><a href="#开头" class="headerlink" title="开头"></a>开头</h1><p>图文混排在移动端的实现方案主要有两大种，比如通过HTML去做一个WebView的富文本，或者通过原生的方式去实现。</p>
 <p>使用WebView在性能上自然不及原生实现，同时开发者需要具备一定的前端知识，它最大的优势是跨平台;</p>
 <p>出于性能的考虑，以及我对前端知识的了解程度，这里我只是介绍一下如何通过原生的方式去实现图文混排。<br><a id="more"></a> </p>
 <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>在手机上，你经常能看到这样的图文实现方式，比如贴吧的这种：</p>
@@ -397,10 +128,27 @@
 <pre><code>1.插入
 2.删除
 </code></pre><p>在进行操作之前，先定义一个抽象的结构，用于存储字符串数据，其实只是对MapEntry的一个简单修改：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class TextEntry&lt;K, V&gt; &#123;</span><br><span class="line">  K key;</span><br><span class="line">  V value;</span><br><span class="line">  factory TextEntry(K key, V value) = TextEntry&lt;K, V&gt;._;</span><br><span class="line">  TextEntry._(this.key, this.value);</span><br><span class="line">  String toString() =&gt; &quot;TextEntry($key: $value)&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>然后来看一下插入的实现：</p>
-<h3 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class RichTextList&lt;T&gt;&#123;</span><br><span class="line"></span><br><span class="line">  List&lt;TextEntry&lt;T, String&gt;&gt; _list = [];</span><br><span class="line"></span><br><span class="line">  void insertOne(int currentPosition, String beforeText, String selectText,</span><br><span class="line">      String afterText, T t) &#123;</span><br><span class="line">    _list[currentPosition].value = beforeText;</span><br><span class="line">    _list.insert(currentPosition + 1, TextEntry(t, &quot;&quot;));</span><br><span class="line">    _list.insert(currentPosition + 2, new TextEntry(null, afterText));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>传递的参数中各个的意义如下：</p>
+<pre><code>class TextEntry&lt;K, V&gt; {
+  K key;
+  V value;
+  factory TextEntry(K key, V value) = TextEntry&lt;K, V&gt;._;
+  TextEntry._(this.key, this.value);
+  String toString() =&gt; &quot;TextEntry($key: $value)&quot;;
+}
+</code></pre><p>然后来看一下插入的实现：</p>
+<h3 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h3><pre><code>class RichTextList&lt;T&gt;{
+
+  List&lt;TextEntry&lt;T, String&gt;&gt; _list = [];
+
+  void insertOne(int currentPosition, String beforeText, String selectText,
+      String afterText, T t) {
+    _list[currentPosition].value = beforeText;
+    _list.insert(currentPosition + 1, TextEntry(t, &quot;&quot;));
+    _list.insert(currentPosition + 2, new TextEntry(null, afterText));
+  }
+
+}
+</code></pre><p>传递的参数中各个的意义如下：</p>
 <ul>
 <li>currentPosition：当前TextField所在的位置</li>
 <li>beforeText：当前TextField中光标前的文字</li>
@@ -409,19 +157,41 @@
 <li>t：你传入的泛型参数</li>
 </ul>
 <p>可以看到，每插入一个数据，还会自动插入一个value为null的TextEntry，而这个Entry则是文字的内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_list.insert(currentPosition + 2, new TextEntry(null, afterText));</span><br></pre></td></tr></table></figure>
-<p>所以图文混排的关键在于有一个统一的数据结构，后续如果想对这个数据结构进行转换也可以依据这个来，value为空的TextEntry表示文字，其他的则是你传入的泛型参数。</p>
+<pre><code>_list.insert(currentPosition + 2, new TextEntry(null, afterText));
+</code></pre><p>所以图文混排的关键在于有一个统一的数据结构，后续如果想对这个数据结构进行转换也可以依据这个来，value为空的TextEntry表示文字，其他的则是你传入的泛型参数。</p>
 <p>下面是插入多条的代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">void insert(int currentPosition, String beforeText, String selectText, String afterText, List&lt;T&gt; list)&#123;</span><br><span class="line">  _list[currentPosition].value = beforeText;</span><br><span class="line">  for(int i = 0; i &lt; list.length; i++)&#123;</span><br><span class="line">    _list.insert(currentPosition + 2*i + 1, TextEntry(list[i], &quot;&quot;));</span><br><span class="line">    _list.insert(currentPosition + 2*i + 2, new TextEntry(null, i == list.length - 1?afterText:&quot;&quot;));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>当然，你可以用插入多个的替代上面插入单个的。</p>
+<pre><code>  void insert(int currentPosition, String beforeText, String selectText, String afterText, List&lt;T&gt; list){
+    _list[currentPosition].value = beforeText;
+    for(int i = 0; i &lt; list.length; i++){
+      _list.insert(currentPosition + 2*i + 1, TextEntry(list[i], &quot;&quot;));
+      _list.insert(currentPosition + 2*i + 2, new TextEntry(null, i == list.length - 1?afterText:&quot;&quot;));
+    }
+  }
+</code></pre><p>当然，你可以用插入多个的替代上面插入单个的。</p>
 <p>然后就是删除的逻辑了：</p>
 <h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><p>删除也非常简单：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">void remove(int currentPosition) &#123;</span><br><span class="line">    String afterText = _list[currentPosition + 1].value;</span><br><span class="line">    _list[currentPosition - 1].value += afterText;</span><br><span class="line">    _list.removeAt(currentPosition + 1);</span><br><span class="line">    _list.removeAt(currentPosition);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>删除的主要逻辑在于把下一个TextField中的内容补在上一个TextField中</p>
+<pre><code>  void remove(int currentPosition) {
+      String afterText = _list[currentPosition + 1].value;
+      _list[currentPosition - 1].value += afterText;
+      _list.removeAt(currentPosition + 1);
+      _list.removeAt(currentPosition);
+  }
+</code></pre><p>删除的主要逻辑在于把下一个TextField中的内容补在上一个TextField中</p>
 <p>核心的逻辑大概就是这样。</p>
 <p>其中有点不方便的就是可能会与你的数据结构不太相同，所以转换的工作需要自己另外实现，当然如果你不想使用抽象的结构也可以自己自定义一种，比如说下面这种：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class CustomTypeList&#123;</span><br><span class="line">  TypeFlag flag;//默认为文字——0：文字，1：图片，2：视频，3：音乐</span><br><span class="line">  var imageUrl;</span><br><span class="line">  CustomTypeList(&#123;this.flag = TypeFlag.text, this.imageUrl = &quot;&quot;&#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">enum TypeFlag&#123;</span><br><span class="line">  text,</span><br><span class="line">  image,</span><br><span class="line">  video,</span><br><span class="line">  music</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>实际使用中可以把枚举类型替换成int值，这样配合后端更佳。</p>
+<pre><code>class CustomTypeList{
+  TypeFlag flag;//默认为文字——0：文字，1：图片，2：视频，3：音乐
+  var imageUrl;
+  CustomTypeList({this.flag = TypeFlag.text, this.imageUrl = &quot;&quot;});
+}
+
+enum TypeFlag{
+  text,
+  image,
+  video,
+  music
+}
+</code></pre><p>实际使用中可以把枚举类型替换成int值，这样配合后端更佳。</p>
 <p><strong>通过ListView实现图文混排最大的一个优势在于你可以将文字与任何类型的布局混合在一起，可以是图片，可以是视频，也可以是音乐！</strong></p>
 <h1 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h1><p>这篇文章没有把全部的代码贴出来，我已经把demo放在仓库里了，小伙伴们有意向可以去下载查看。</p>
 <p><a href="https://github.com/asjqkkkk/TextPicList" target="_blank" rel="noopener"><strong>项目地址</strong></a></p>
@@ -429,376 +199,141 @@
 <p><img src="https://blog-pic-1256696029.cos.ap-guangzhou.myqcloud.com/apk/apk.png" alt="image"></p>
 <p>如果你对于上面图文混排最后的效果不是特别满意，也可以到上面的app(android版)里面瞧一下,有做过特殊处理哦！</p>
 
-      
-    </div>
-
-    
-
-    
-    
-    
-
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2019/04/16/杂谈-gun-legal/" rel="next" title="杂谈-gun&legal">
-                <i class="fa fa-chevron-left"></i> 杂谈-gun&legal
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/05/04/骚年，你还没开始学Flutter吗？/" rel="prev" title="骚年，你还没开始学Flutter吗？">
-                骚年，你还没开始学Flutter吗？ <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-  </div>
-
-
-          </div>
-          
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <img class="site-author-image" itemprop="image"
-                src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1532883475752&di=918e8ad03b17db01c84cdca20dd0ecdb&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201204%2F28%2F20120428125420_iUrGK.thumb.700_0.jpeg"
-                alt="Old Chen" />
-            
-              <p class="site-author-name" itemprop="name">Old Chen</p>
-              <p class="site-description motion-element" itemprop="description">知惑顿断如碎石，思惑难断如藕丝</p>
-          </div>
-
-          
-            <nav class="site-state motion-element">
-              
-                <div class="site-state-item site-state-posts">
-                
-                  <a href="/archives/">
-                
-                    <span class="site-state-item-count">18</span>
-                    <span class="site-state-item-name">日志</span>
-                  </a>
+                            <hr>
+                        </div>
+                        <br>
+                        <div>
+                            
+                            <p>
+                                <i class="iconfont icon-tag"></i>
+                                
+                            </p>
+                            
+                                <p class="note note-warning">�������������³��ر������⣬������ <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener">CC BY-SA 3.0Э��</a> ��ת����ע��������</p>
+                            
+                        </div>
+                    </div>
                 </div>
-              
-
-              
-
-              
-            </nav>
-          
-
-          
-            <div class="feed-link motion-element">
-              <a href="/atom.xml" rel="alternate">
-                <i class="fa fa-rss"></i>
-                RSS
-              </a>
             </div>
-          
-
-          
-            <div class="links-of-author motion-element">
-              
-                <span class="links-of-author-item">
-                  <a href="https://github.com/asjqkkkk" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
-                  
-                </span>
-              
-                <span class="links-of-author-item">
-                  <a href="https://blog.csdn.net/asjqkkkk" target="_blank" title="csdn"><i class="fa fa-fw fa-rss-square"></i>csdn</a>
-                  
-                </span>
-              
-            </div>
-          
-
-          
-          
-
-          
-          
-
-          
+        <div class="d-none d-lg-block col-lg-2 toc-container">
             
-          
-          
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i> Toc:</p> 
+    <div id="tocbot"></div>
+  </div>
 
         </div>
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#开头"><span class="nav-number">1.</span> <span class="nav-text">开头</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#介绍"><span class="nav-number">2.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#示例"><span class="nav-number">3.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实现"><span class="nav-number">4.</span> <span class="nav-text">实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#插入"><span class="nav-number">4.0.1.</span> <span class="nav-text">插入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除"><span class="nav-number">4.0.2.</span> <span class="nav-text">删除</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结尾"><span class="nav-number">5.</span> <span class="nav-text">结尾</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
-
     </div>
-  </aside>
+</div>
+
+<!-- custom -->
 
 
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+    <div class="container comments mx-auto" id="comments">
         
+    </div>
+</div>
+
+    
+</main>
+
+
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">oldchen</span>
-
-  
-
-  
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="None" data-success="success" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
 </div>
 
 
-
-
-   <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div> 
-
-
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Mist</a> v6.3.0</div>
-
-
-
-
-        
-
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-	
-    
-
+<footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/0x2e/Material-T" target="_blank" rel="nofollow noopener"> <b>Material-T</b></a>
+    <br>
     
   </div>
+</footer>
 
+  <!-- SCRIPTS -->
+  <script src="/lib/mdbootstrap/js/jquery-3.4.1.min.js"></script>
+  <script src="/lib/mdbootstrap/js/popper.min.js"></script>
+  <script src="/lib/mdbootstrap/js/bootstrap.min.js?v=4.3.1"></script>
+  <script src="/lib/mdbootstrap/js/mdb.min.js?v=4.8.7"></script>
+  <script src="/lib/nprogress/nprogress.min.js?v=0.2.0"></script>
+  <script src="/js/main.js"></script>
   
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
+      <script src="/lib/tocbot/tocbot.min.js?v=4.7.0"></script>
+    
+    <script src="/js/post.js"></script>
   
   
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
-
+    <script src="/lib/prettify/prettify.min.js?v=0.1.0"></script>
+    <script>
+      $(document).ready(function(){
+        $('pre').addClass('prettyprint linenums');
+        prettyPrint();
+      })
+    </script>
   
   
-    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+    <script src="/lib/typed/typed.min.js?v=2.0.9"></script>
+    <script>
+        var typed = new Typed('#subtitle', {
+          strings: [
+            '  ',
+            "Flutter图文混排原生实现方案&nbsp;",
+        ],
+        cursorChar: "_",
+        typeSpeed: 70,
+        startDelay: 300, //开始之前延迟300毫秒
+        loop: false,
+        });
+        $(".typed-cursor").addClass("h2");
+    </script>
   
-
-
   
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
-
-
-
-  
+    <script src="/lib/anchor/anchor.min.js?v=4.2.0"></script>
+    <script>
+      anchors.options = {
+        placement: "right",
+        visible: "false",
+        
+      };
+      var el = "h1,h2,h3,h4,h5,h6".split(",")
+      var res = []
+      for (item of el) {
+        res.push(".markdown-body > " + item)
+      }
+      anchors.add(res.join(", "))
+    </script>
   
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
-
-
-
+    <script src="/js/local-search.js"></script>
+    <script>
+      var path = "/local-search.xml";
+      var inputArea = document.querySelector("#local-search-input");
+      inputArea.onclick = function(){ getSearchFile(path); this.onclick = null }
+    </script>
   
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
-
-
-
-  
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
 <script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":75,"height":150},"mobile":{"show":true},"log":false});</script></body>
 </html>
