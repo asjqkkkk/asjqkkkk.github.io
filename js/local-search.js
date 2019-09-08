@@ -23,7 +23,7 @@ var searchFunc = function (path, search_id, content_id) {
     'use strict';
     var $input = document.getElementById(search_id);
     var $resultContent = document.getElementById(content_id);
-    $resultContent.innerHTML = "<div class='m-auto text-center'><div class='spinner-border' role='status'><span class='sr-only'>Loading...</span></div><br/>正在载入索引文件，请稍后 ~</div>";
+    $resultContent.innerHTML = "<div class='m-auto text-center'><div class='spinner-border' role='status'><span class='sr-only'>Loading...</span></div><br/>Loading...</div>";
     $.ajax({
         // 0x01. load xml file
         url: path,
@@ -85,7 +85,7 @@ var searchFunc = function (path, search_id, content_id) {
                     }
                     // 0x05. show search results
                     if (isMatch) {
-                        str += "<a href='" + data_url + "' class='list-group-item list-group-item-action font-weight-bolder search-list-title'>" + orig_data_title + "</a>";
+                        str += "<a href='/" + data_url + "' class='list-group-item list-group-item-action font-weight-bolder search-list-title'>" + orig_data_title + "</a>";
                         var content = orig_data_content;
                         if (first_occur >= 0) {
                             // cut out 100 characters
